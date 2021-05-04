@@ -1,0 +1,1284 @@
+\documentclass[portuguese, aspectratio=169, xcolor=table]{beamer}
+%\documentclass[handout]{beamer}  % don't show "pause slides"
+\usepackage{pgfpages}  % to allow notes on second screen
+%\setbeameroption{show notes on second screen}  % show notes with pympress
+%\setbeameroption{show only notes}
+\usepackage[export]{adjustbox}
+\usefonttheme{professionalfonts}
+\usepackage{arev}
+\usepackage[portuguese]{babel}
+
+\usetheme{Boadilla}
+%\usetheme[style=light]{Nord}
+%\usecolortheme{Nord}
+\usecolortheme{seahorse}
+%\usecolortheme{beaver}
+
+
+\usepackage{hyperref}
+
+\usepackage{tikz}
+\usepackage{fancyvrb}
+\usepackage{minted}
+\usepackage{animate}
+\usepackage{mathtools}
+\usepackage{svg}
+\usepackage{menukeys}
+\usepackage{fontawesome}
+\usepackage{marvosym}
+
+%\usepackage{pgf-umlcd}
+%\usepackage{aeguill}
+%%%%%%
+% no terminal: plantuml -teps class0.uml
+%%%%%%
+
+
+
+\let\temp\ComputerMouse
+\renewcommand{\ComputerMouse}{{\LARGE\temp}} 
+
+%\definecolor{links}{HTML}{91dde0}
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+
+
+
+\title[Java]{Notas sobre Java}
+%\subtitle{e tal}
+
+\author[António Anjos] % (optional, for multiple authors)
+{António Anjos\\\url{aanjos@uevora.pt}}
+
+\institute[UÉ] % (optional)
+{
+    %\inst{1}%
+    Departamento de Informática\\
+    Universidade de Évora
+}
+
+%\date[INF10358M] % (optional)
+%{INF10358M -- Programming and Intelligent Systems}
+
+\logo{\includegraphics[height=0.5cm]{logo.png}}
+
+
+\begin{document}
+    \frame{\titlepage}
+    
+    
+    \begin{frame}
+        \frametitle{Tópicos}
+        \tableofcontents
+    \end{frame}
+    
+    
+%    \begin{frame}{Motivation}
+%        \begin{itemize}
+%            \item 
+%        \end{itemize}
+%    \end{frame}
+    
+    
+%    \section{Microjava}
+
+
+\section{Capítulo 1 e 2}
+
+\begin{frame}{Convenções}
+\begin{itemize}
+        \item Nomes de classe: iniciam com maiúscula, utilizam CamelCase, e são nomes no singular
+
+\hspace{0.25cm}\texttt{Pessoa, Animal, Carro, CarroEletrico}
+
+    \item Nomes de variável/atributo: iniciam com minúscula, e utilizam camelCase
+
+    \hspace{0.25cm}\texttt{ano, idade, pesoLiquido, notaFrequencia1, notaExameRecurso}
+
+    \item Nomes de método: iniciam com minúscula, e utilizam camelCase
+
+        \hspace{0.25cm}\texttt{getAno, getIdade, setPesoLiquido, getNotaExameRecurso}
+
+    \item Nomes de constante: tudo em maiúsculas, e utilizam snake\_case
+
+        \hspace{0.25cm}\texttt{PI, TAMANHO\_MAXIMO, MAX\_LARGURA\_JANELA}
+\item Nomes de packages: uma palavra em minúsculas
+
+\hspace{0.25cm}\texttt{java, javafx, swing, org, opencv}
+\vspace{0.15cm}
+
+\scriptsize \textbf{NOTA:} Packages são um tipo de pastas que contêm classes (ou outras pastas). E.g,\ \mintinline{java}{import java.util.Scanner}, quer dizer: ``Carregar a classe \texttt{Scanner} que está na `pasta' \texttt{util} que, por sua vez, se encontra na `pasta' \texttt{java}''
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tipos/classes e variáveis}
+\begin{itemize}
+    \item Exemplos de tipos primitivos: \mintinline{java}{int, float, double, char, boolean}
+    \item Exemplos de ``tipos'' não primitivos (AKA classes): \mintinline{java}{String, StringBuilder}
+    \item Para se declarar uma variável, primeiro indica-se o tipo e, só depois, o nome da variável, e.g.:
+    \begin{minted}{java}
+     int a;
+     String s;
+    \end{minted}
+\end{itemize}
+
+\begin{alertblock}{Atenção!}
+\begin{itemize}
+    \item Tipos primitivos não requerem instanciação
+    \item Classes obrigam a instanciação (i.e.\ utilização de \mintinline{java}{new})
+    \item \mintinline{java}{String} é exceção à regra. Temos as 2 hipóteses, com e sem utilização explícita de \mintinline{java}{new}:
+    \begin{minted}{java}
+        String s1 = new String("Hello"); String s2 = "Hello"
+    \end{minted}
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Declaração \textit{vs} inicialização}
+\begin{columns}
+\column[t]{0.4\linewidth}
+\textbf{Declaração}:
+\begin{itemize}
+    \item Informa o compilador sobre a existência de uma variável e o tipo de dados que esta vai referir
+    \item Exemplos:
+\begin{minted}{java}
+int n;
+StringBuilder sb;
+\end{minted}
+\end{itemize}
+\column[t]{0.6\linewidth}
+\textbf{Inicialização}:
+\begin{itemize}
+    \item Atribui um valor à variável (já declarada)
+    \item Exemplos:
+\begin{minted}{java}
+n = 10;
+sb = new StringBuilder();
+\end{minted}
+\item Declaração e inicialização num só passo:
+\begin{minted}{java}
+int n = 10;
+StringBuilder sb = new StringBuilder();
+\end{minted}
+\end{itemize}
+\end{columns}
+\begin{alertblock}{Atenção!}
+ \begin{itemize}
+     \item Variáveis dentro de métodos devem de ser inicializadas (ou podem referenciar ``lixo'')
+     \item Atributos de classes são automaticamente inicializados com o \textit{vazio} do tipo respetivo
+ \end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{class}}
+\begin{itemize}
+    \item O código Java vive dentro de classes
+    \item A classe mais pequena possível:
+\begin{columns}
+\column[]{0.5\linewidth}
+    \begin{minted}{java}
+    class UmaClasse {
+        
+    }
+\end{minted}
+\column[]{0.5\linewidth}
+\begin{center}
+\includegraphics[scale=1]{./uml_diagrams/class0}
+\end{center}
+\end{columns}
+\vspace{0.25cm}
+\item Notar que o nome da classe inicia com maiúscula e, depois, CamelCase
+\item Esta classe não pode ser executada diretamente porque não tem o método \mintinline{java}{main}
+\end{itemize}
+\end{frame}    
+    
+    
+\begin{frame}[fragile]{\mintinline{java}{main()}}
+    \begin{itemize}
+        \item Para ser possível executar um programa Java, uma das classes do programa tem de ter o método \mintinline{java}{main}
+        \item Quando mandamos correr o programa, a JVM vai à procura do \mintinline{java}{main} dentro classe que tiver o mesmo nome que ficheiro \text{.java} que estamos a correr
+        \item O \mintinline{java}{main} tem uma sintaxe especial que a JVM espera:
+\begin{minted}{java}
+    public static void main(String[] args) {
+    }
+\end{minted}
+    \end{itemize}
+\begin{itemize}
+\item \mintinline{java}{public}: permite à JVM aceder ao \mintinline{java}{main}
+\item \mintinline{java}{static}: para a JVM poder executar o \mintinline{java}{main} (i.e., sem instanciar a classe)
+\item \mintinline{java}{void}: para indicar que o \mintinline{java}{main} não vai retornar nenhum valor
+\item \mintinline{java}{String[] args}: contém as strings passadas pelo terminal (o nome \mintinline{java}{args} é utilizado frequentemente, mas pode ser o que quisermos)
+\end{itemize}
+\end{frame}
+    
+
+\begin{frame}[fragile]{Programa mínimo (assumir ficheiro com nome \texttt{Treta.java})}
+\begin{columns}
+\column[t]{0.5\linewidth}
+    \begin{minted}{java}
+class Treta {
+    
+    public static void main(String[] args) {
+        
+    }
+    
+}
+\end{minted}
+\column[t]{0.5\linewidth}
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{./uml_diagrams/class1}
+\end{center}
+\end{columns}
+\vfill
+
+\begin{itemize}
+    \item Notar que:
+    \begin{itemize}
+        \item O \mintinline{java}{main} encontra-se dentro de uma classe que tem o mesmo nome que o ficheiro
+        \item Ao executarmos o programa \texttt{Treta.java}, a JVM ``vai'' à classe treta e executa o \mintinline{java}{main}
+        \item Métodos estáticos aparecem sublinhados em UML
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Programa com 2 classes (ficheiro \texttt{Fichas.java})}
+\begin{columns}
+\column[]{0.5\linewidth}
+\begin{minted}[fontsize=\small]{java}
+class FichaUm {
+    void exercicioUm() {
+        System.out.println("Olá mundo!");
+    }
+    
+    void exercicioDois() {
+        System.out.println("Adeus mundo!");
+    }
+}
+
+class Fichas {
+    public static void main(String[] args) {
+        FichaUm f1 = new FichaUm();
+        f1.exercicioUm();
+    }
+}
+\end{minted}
+\column[]{0.5\linewidth}
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{./uml_diagrams/class2}
+\end{center}
+\vspace{0.5cm}
+\tiny \textbf{NOTA:} Este é um exemplo estúpido já que, geralmente, apenas faz sentido criar uma classe se estivermos a pensar criar mais do que uma instância da mesma. Inclusivamente, o nome \texttt{Fichas} viola a convenção.
+\end{columns}
+
+\end{frame}
+  
+\begin{frame}[fragile]{Programa com mais sentido (ficheiro \texttt{Zoo.java})}
+\begin{columns}
+\column[t]{0.5\linewidth}
+\begin{minted}[fontsize=\scriptsize]{java}
+class Animal {
+    String nome;
+    
+    Animal(String nome) {  // construtor
+        this.nome = nome;
+    }
+    
+    String getNome() {
+        return nome;
+    }
+}
+
+class Zoo {
+    public static void main(String[] args) {
+        Animal a1 = new Animal("Bobby");
+        Animal a2 = new Animal("Pitucha");
+        System.out.println("Um dos animais chama-se ", a1.nome);
+    }
+}
+\end{minted}
+\column[t]{0.5\linewidth}
+\begin{itemize}
+    \item 2 classes e 2 objetos:
+\end{itemize}
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{./uml_diagrams/class3}
+    \end{center}
+\textbf{\color{red}PERIGO!} No \mintinline{java}{main}, estamos a aceder diretamente ao atributo \texttt{nome}!
+\end{columns}
+\vspace{-0.2cm}
+\begin{flushright}
+\tiny    \textbf{NOTA:} Em UML 1.0 sublinhava-se o nome e tipo dos objetos (i.e., das instâncias)
+\end{flushright}
+\end{frame}  
+
+\begin{frame}[fragile]{Programa com \textit{ainda} mais sentido (ficheiro \texttt{Zoo.java})}
+\begin{columns}
+\column[t]{0.5\linewidth}
+\begin{minted}[fontsize=\scriptsize]{java}
+class Animal {
+    private String nome;
+    
+    public Animal(String nome) {  // construtor
+        this.nome = nome;
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+}
+
+class Zoo {
+    public static void main(String[] args) {
+        Animal a1 = new Animal("Bobby");
+        Animal a2 = new Animal("Pitucha");
+        System.out.println("Um dos animais chama-se ", a1.getNome());
+    }
+}
+\end{minted}
+\column[t]{0.5\linewidth}
+\begin{center}
+\includegraphics[width=0.4\linewidth]{./uml_diagrams/class4}
+\end{center}
+\begin{itemize}
+    \item \mintinline{java}{a1.nome} agora não é permitido!
+    \item Notar privado (--) \textit{vs} público (+)
+\end{itemize}
+\end{columns}
+\end{frame}  
+
+
+\begin{frame}[fragile]{Se o nome do animal não é conhecido à partida (ficheiro \texttt{Zoo.java})}
+\begin{columns}
+\column[t]{0.5\linewidth}
+\begin{minted}[fontsize=\scriptsize]{java}
+class Animal {
+    private String nome;
+    
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+}
+
+class Zoo {
+    public static void main(String[] args) {
+        Animal a1 = new Animal();
+        a1.setNome("Bobby");
+        System.out.println("O bicho chama-se ", a1.getNome());
+    }
+}
+\end{minted}
+\column[t]{0.5\linewidth}
+\begin{center}
+\includegraphics[width=0.45\linewidth]{./uml_diagrams/class5}
+\end{center}
+
+\end{columns}
+\end{frame}  
+
+
+\begin{frame}{Atributos (i.e., \textit{variáveis}) e métodos de instância \textit{vs} classe}
+\begin{columns}
+\column[]{0.7\linewidth}
+\begin{itemize}
+    \item Um atributo de instância:
+    \begin{itemize}
+        \item é uma \textit{variável} exclusiva de cada objeto (i.e., cada instância tem a sua própria cópia)
+        \item só existe se a instância tiver sido criada
+        \item se for público, acede-se através do objeto, e.g., \mintinline{java}{a1.nome}
+    \end{itemize}
+    \item Um atributo de classe (i.e., \mintinline{java}{static}):
+    \begin{itemize}
+        \item é uma \textit{variável} comum a todos os objectos instanciados a partir dessa classe
+        \item acede-se, geralmente, através do nome da classe, e.g., \mintinline{java}{JFrame.ABORT}
+        \item não requer a existência de um objeto dessa classe
+        \item define, frequentemente, uma constante dessa classe (como no exemplo anterior)
+    \end{itemize}
+    \item Os métodos de instância e de classe são acedidos da mesma forma que os atributos
+\end{itemize}
+\column[]{0.3\linewidth}
+\begin{center}
+    \includegraphics[width=\linewidth]{./uml_diagrams/class6}
+\end{center}
+\end{columns}
+\end{frame}  
+
+
+\section{Capítulo 3}
+\begin{frame}{Literais numéricos \textit{vs} Tipos numéricos (mais comuns)}
+\begin{itemize}
+    \item \mintinline{java}{int}: não tem parte decimal
+    
+    \hspace{0.25cm}
+    \texttt{-5, 4, 8, 2000}
+    \item \mintinline{java}{float}: tem parte decimal (basta sufixar com um \texttt{f})
+    
+    \hspace{0.25cm}
+    \texttt{-5f, 4f, 8.0f, 2000.5f}
+    \item \mintinline{java}{double}: tem parte decimal e mais precisão que \mintinline{java}{float}
+    
+    \hspace{0.25cm}
+    \texttt{-5.0, 4.0, 8.0, 2000.5}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Operações entre diferentes tipos}
+\begin{itemize}
+    \item O valor final de uma operação é do tipo mais geral
+    \item Exemplo (com operador +, mas pode ser outro operador aritmético): 
+    \begin{itemize}
+        \item \mintinline{java}{int + float} $\rightarrow$ \mintinline{java}{float}
+        \item \mintinline{java}{int + double} $\rightarrow$ \mintinline{java}{double}
+        \item \mintinline{java}{float + double} $\rightarrow$ \mintinline{java}{double}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Atribuição de valores}
+\begin{itemize}
+\item Para se atribuir um valor a uma variável, a variável tem de ter capacidade para receber o valor atribuído
+\item Exemplos OK:
+\begin{minted}{java}
+    double n = 2.5;  // double cabe num double
+    double n = 2.5f; // float cabe num double
+    double n = 2;    // int cabe num double
+    float n = 2.5f;  // float cabe num float
+    float n = 2;     // int cabe num float
+    int n = 2;       // int cabe num int
+\end{minted}
+\item Quando os tipos não são iguais, ocorre um \textbf{cast implícito} (i.e., uma conversão de tipo)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Atribuição de valores: Not OK}
+\begin{itemize}
+\item Exemplos que vão dar erro:
+\begin{minted}{java}
+    int n = 2.5;     // double não cabe num int
+    int n = 2.5f;    // float não cabe num int
+    float n = 2.5;   // double não cabe num float
+\end{minted}
+\item Para ``forçar'' a atribuição tem de se fazer um \textbf{cast explícito} para o tipo da variável recetora (o mesmo que dizer ``\textit{trust me I know what I'm doing}'')
+\begin{minted}{java}
+    int n = (int)2.5;     // double não cabe num int
+    int n = (int)2.5f;    // float não cabe num int
+    float n = (float)2.5; // double não cabe num float
+\end{minted}
+\item Se o valor a atribuir não ``encaixar'' na variável recetora:
+\begin{itemize}
+\item \mintinline{java}{int}, a parte da informação que não encaixa é descartada, por exemplo:
+\begin{minted}{java}
+    int n = (int)2.5;     // n contém apenas o valor 2!!!
+\end{minted}
+\item \mintinline{java}{float}, a variável toma o valor \mintinline{java}{Infinity}
+\end{itemize} 
+
+\item A operação de cast tem precedência sobre as operações aritméticas 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Operadores de divisão}
+\begin{itemize}
+    \item A divisão é efetuada pelo operador \texttt{/}
+    \begin{alertblock}{Cuidado!}
+        \begin{itemize}
+        \item Referido anteriormente: operações aritméticas entre dois tipos, resultam no tipo mais geral
+        \item Assim, se ambos operandos forem \mintinline{java}{int}, o resultado será \mintinline{java}{int}
+    \begin{minted}{java}
+        5/2    // O resultado é 2 em vez de 2.5
+        1/2    // O resultado é 0 em vez de 0.5
+    \end{minted}
+    \item A solução passa por converter um dos operandos:
+    \begin{minted}{java}
+        1f/2    // O resultado é 0.5f
+        1/2.0   // O resultado é 0.5  (i.e. double)
+    \end{minted}
+    \end{itemize}
+    \end{alertblock}
+    \item O resto da divisão é dado pelo operador \texttt{\%}
+    \begin{itemize}
+        \item Em Java (ao contrário do C), pode-se operar não inteiros
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Limites dos tipos primitivos}
+\begin{itemize}
+    \item Quantas ``caixas de memória'' são necessárias para representar o resultado de $\frac{1}{3}$?
+    \item Temos de decidir: valores máximos, mínimos, e precisão que queremos representar
+    \item Decidir, quer dizer: ``escolher que tipo vamos usar, \mintinline{java}{int}, \mintinline{java}{float}, etc.''
+    \item Se o resultado de uma operação com \textit{não inteiros} não ``couber'' no tipo que estamos a utilizar, o resultado será \mintinline{java}{Infinity} (e.g., cast de um \mintinline{java}{double} muito grande para \mintinline{java}{float})
+    \item No caso dos inteiros, temos um overflow (não é fácil de detetar)
+    \item As \textit{wrapper classes} permitem consultar os valores máximos (e/ou mínimos) possíveis:
+\begin{minted}{java}
+Integer.MAX_VALUE // maior inteiro possível (o mais negativo é MIN_VALUE)
+Float.MAX_VALUE   // maior float possível (o mais negativo é -MAX_VALUE)
+Double.MAX_VALUE  // como no float
+Float.MIN_VALUE   // o valor mais pequeno que é possível representar
+Double.MAX_VALUE  // como no float
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Resultados estranhos? (tipos com vírgula flutuante)}
+\begin{center}
+    \begin{tabular}{ccl}
+\textbf{Operação} & \textbf{Resultado} & \textbf{Comentário}\\
+\hline
+$\frac{n}{\pm \mintinline{java}{Infinity}}$ & 0 & Algo dividido infinitamente, tende para 0\\
+$\mintinline{java}{Infinity}  + \mintinline{java}{Infinity}$  &  \mintinline{java}{Infinity} & \\
+$\pm \mintinline{java}{Infinity} \times \pm \mintinline{java}{Infinity}$ & $\pm \mintinline{java}{Infinity}$\\
+$\frac{\pm n}{0}, \quad n \neq 0$        &   $\pm \mintinline{java}{Infinity}$ & \scriptsize Se $n$ e 0 forem \mintinline{java}{int}, temos uma \mintinline{java}{ArithmeticException}\\
+$\frac{\pm 0}{\pm 0}$      &  \mintinline{java}{NaN}\\
+$\pm \mintinline{java}{Infinity} - \mintinline{java}{Infinity}$ &   \mintinline{java}{NaN}\\
+$\frac{\pm \mintinline{java}{Infinity}}{\pm \mintinline{java}{Infinity}}$  & \mintinline{java}{NaN}\\
+$\pm \mintinline{java}{Infinity} \times 0$      &  \mintinline{java}{NaN}\\
+\end{tabular}
+\end{center}
+\begin{block}{Decorar?}
+\begin{itemize}
+    \item Muito mais importante que decorar cada situação é saber que \mintinline{java}{Infinity} e \mintinline{java}{NaN} podem advir duma destas operações
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Formatar números com \mintinline{java}{DecimalFormat}}
+\begin{itemize}
+    \item Para valores numéricos, podemos criar um formatador
+\end{itemize}
+\vspace{0.5cm}
+\begin{minted}{java}
+    double altura = 1.785;
+    String padrao = "##.##";  // ou "00.00", aparece 0 se não existir dígito
+    DecimalFormat df = new DecimalFormat(padrao);
+    System.out.println("A altura é " + df.format(altura));
+\end{minted}
+\vfill
+
+\begin{center}
+    \href{https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html#numberpattern}{Detalhe sobre a sintaxe dos padrões}
+\end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]{Output formatado}
+\begin{itemize}
+    \item Em vez de se criar uma string a partir de concatenação:
+\begin{minted}{java}
+int idade = 25; double alt = 1.785;
+System.out.print("Idade é " + idade + ", e altura é " +  altura + "cm");
+\end{minted}
+\item é possível indicar onde, na string, devem aparecer os valores:
+\begin{minted}{java}
+System.out.format("A idade é %d, e a altura %f cm", idade, altura);
+\end{minted}
+        
+\item O \texttt{\%d} e \texttt{\%f}, são chamados conversores para inteiros (i.e.\ decimal integers) e não inteiros (i.e.\ floating point), respetivamente
+
+\item O formatador \texttt{\%f} permite controlar o número de casas decimais do número, e.g.\ 2 casas:
+\begin{minted}{java}
+System.out.format("A a altura é %.2f cm", altura);
+\end{minted}
+
+\item \mintinline{java}{System.out.format()} é equivalente a \mintinline{java}{System.out.printf()}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Alinhamento de Strings (com conversor {\color{red}\%s})}
+\begin{itemize}
+    \item Pode definir-se o espaço mínimo e máximo de carateres que uma String deve ocupar, bem como o seu alinhamento nesse espaço
+    \item Espaço exato, texto alinhado à direita (o que acontece por omissão nas Strings):
+    \begin{minted}{java}
+    System.out.format("%s", "Olá")  // ou System.out.println("Olá")
+    \end{minted}
+    Ouput: \fbox{Olá}
+    \item Espaço mínimo 10 carateres, texto alinhado à direita:
+    \begin{minted}{java}
+    System.out.format("%10s", "Olá");
+    \end{minted}
+    Ouput: \fbox{\ \ \ \ \ \ \ Olá}
+    \item Espaço mínimo 10 carateres, texto alinhado à esquerda:
+    \begin{minted}{java}
+        System.out.format("%-10s", "Olá");
+    \end{minted}
+    Ouput: \fbox{Olá\ \ \ \ \ \ \ }
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{String}: Métodos úteis}
+\begin{itemize}
+\item \mintinline{java}{int length()}: Devolve o tamanho da string
+\begin{minted}{java}
+    String nome = "Manuel";
+    System.out.println(nome.lenght());          // imprime 6
+    System.out.println("Maria".length());       // imprime 5
+\end{minted}
+\item \mintinline{java}{char charAt(pos)}: Devolve o carater na posição \mintinline{java}{pos}
+\begin{minted}{java}
+    System.out.println(nome.charAt(2));        // imprime 'n'
+\end{minted}
+
+\item \mintinline{java}{String substring(posI, posF)}: Devolve a sub-string de \mintinline{java}{posI} até \mintinline{java}{posF} (não inc.)
+\begin{minted}{java}
+    int pos = 5;
+    System.out.println(nome.substring(2, pos));  // imprime "nue"
+\end{minted}
+
+\item \mintinline{java}{String concat(String)}: Concatena as duas strings
+\begin{minted}{java}
+    System.out.println("Olá".concat(" Maria"));  // "Olá Maria"
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{concat} vs \mintinline{java}{+}}
+\begin{itemize}
+    \item O código
+    \begin{minted}{java}
+    System.out.println("Olá".concat(" Maria"));  // "Olá Maria"
+    \end{minted}
+é parecido com:
+
+  \begin{minted}{java}
+    System.out.println("Olá" + " Maria");  // "Olá Maria"
+\end{minted}
+
+    \item Isto quer dizer que, ao se utilizar o \mintinline{java}{+}, um dos operandos \textbf{tem de ser} uma \mintinline{java}{String}, para que o resultado seja uma \mintinline{java}{String}
+    \item Situações problemáticas:
+\begin{minted}{java}
+System.out.println('A' + 'b'); // Adição de chars resulta em int!
+System.out.println("Olá".charAt(1) + "bom".charAt(0) + "dia");
+\end{minted}
+\begin{itemize}
+    \item No último exemplo, somamos 2 \mintinline{java}{char}s que resultam num \mintinline{java}{int} e, depois, esse número concatena com a \mintinline{java}{String} ``dia''
+    \item Relembrar que \mintinline{java}{charAt} devolve um \mintinline{java}{char} e não uma \mintinline{java}{String}
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{Math}: Métodos úteis}
+\begin{itemize}
+\item \mintinline{java}{static double pow(double a, double b)}: Devolve $a^b$
+\begin{minted}{java}
+    System.out.println(Math.pow(2, 3));  // imprime 8
+\end{minted}
+\item \mintinline{java}{static double floor(double a)}: Devolve $a$ arredondado para baixo
+\begin{minted}{java}
+    System.out.println(Math.floor(2.9));  // imprime 2
+\end{minted}
+\item \mintinline{java}{static double ceil(double a)}: Devolve $a$ arredondado para cima
+\begin{minted}{java}
+    System.out.println(Math.ceil(2.1));  // imprime 3
+\end{minted}
+\item \mintinline{java}{static int round(float a)}: Devolve $a$ arredondado ao inteiro mais próximo
+\begin{minted}{java}
+    System.out.println(Math.round(2.1));  // imprime 2
+\end{minted}
+\end{itemize}
+\vfill
+
+\begin{alertblock}{Atenção!}
+\begin{itemize}
+    \item Notar que os métodos (e atributos) da classe \mintinline{java}{Math} são todos \textbf{static}, i.e., de classe
+    \item Assim nunca instanciamos a classe \mintinline{java}{Math} (i.e., nunca se criam objetos desta classe)
+    \item Todos os membros da classe são acedidos através nome da classe, e não através do objeto
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{Scanner}: Métodos úteis}
+\begin{itemize}
+    \item \mintinline{java}{String next()}: Lê até ao próximo espaço e devolve uma string
+\begin{minted}{java}
+    Scanner sc = new Scanner(System.in);
+    String frase = sc.next();      // Digitar: "Olá bom dia"
+    System.out.println(frase);     // imprime "Olá"
+\end{minted}
+
+\item \mintinline{java}{String nextLine()}: Lê até ao próximo enter e devolve uma string
+\begin{minted}{java}
+    String frase = sc.nextLine();  // Digitar: "Olá bom dia"
+    System.out.println(frase);     // imprime "Olá bom dia"
+\end{minted}
+
+\item \mintinline{java}{String nextInt()}: Lê e devolve um número inteiro
+\begin{minted}{java}
+    int valor = sc.nextInt();
+\end{minted}
+\item \mintinline{java}{float nextFloat()}: Lê e devolve um número \textit{floating point} (vírgula flutuante)
+\begin{minted}{java}
+    float valor = sc.nextFloat();
+\end{minted}
+\item \mintinline{java}{double nextDouble()}: Lê e devolve um número \textit{floating point} de precisão dupla
+\begin{minted}{java}
+    double valor = sc.nextDouble();
+\end{minted}
+\item \mintinline{java}{void close()}: Fecha o scanner (nunca fechar antes de ler tudo o que queremos!!!)
+\begin{minted}{java}
+    sc.close();
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ler do teclado}
+\begin{itemize}
+    \item A forma mais fácil de ler valores introduzidos através do teclado é utilizando um objeto da classe \mintinline{java}{Scanner} (temos de importar do package \mintinline{java}{java.util})
+    \item Os objetos da classe \mintinline{java}{Scanner} precisam de saber onde queremos fazer o \textit{scan}
+    \item Em Java, ``teclado'' diz-se: \mintinline{java}{System.in}
+    \item Portanto, podemos ler do teclado assim:
+\begin{minted}{java}
+ Scanner sc = new Scanner(System.in);  // instância p/ler no teclado
+ String nome = sc.next();
+ String morada = sc.nextLine();
+ int idade = sc.nextInt();
+ float altura = sc.nextFloat();  // ou double altura = sc.nextDouble()
+ sc.close();  // fechar quando não for necessário ler mais nada
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Escrever no ecrã}
+\begin{itemize}
+    \item Em Java, ``ecrã'' diz-se: \mintinline{java}{System.out}\footnote{\mintinline{java}{out} é, um atributo da classe \mintinline{java}{System}, instância da classe \mintinline{java}{PrintStream} e que a JVM `canaliza' para o ecrã} 
+    \item Podemos escrever no ecrã por enviar a mensagem \mintinline{java}{print} ao ``ecrã''
+\begin{minted}{java}
+    System.out.print("Olá");
+\end{minted}
+\item O ``ecrã'' sabe responder a outras mensages, p.ex., \mintinline{java}{println} que, além de imprimir a mensagem desejada, também muda de linha
+\item São equivalentes:
+\begin{minted}{java}
+    System.out.println("Olá");
+    System.out.print("Olá\n");
+\end{minted}
+\mintinline{java}{'\n'} é um caráter invisível que representa uma nova linha (new line)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Importar?}
+\begin{itemize}
+\item Porque é que temos acesso às classes \mintinline{java}{String} e \mintinline{java}{Math} sem ter de importar?
+\begin{itemize}
+    \item Estão ambas no package \mintinline{java}{java.lang} que é importado automaticamente pela JVM
+\end{itemize}
+\item As classes no package \mintinline{java}{java.util} não são importadas automaticamente
+\begin{itemize}
+    \item Por isso é que, para utilizar a classe \mintinline{java}{Scanner}, precisamos de importar:
+    \begin{minted}{java}
+    import java.util.Scanner;
+    \end{minted}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Capítulo 4}
+\begin{frame}{Controlo de acesso aos membros da classe}
+\begin{itemize}
+    \item Os membros de uma classe são os:
+    \begin{itemize}
+        \item Atributos (i.e., as variáveis disponíveis na classe)
+        \item Métodos (i.e., as ``funções'' definidas na classe)
+    \end{itemize}
+    \item Podemos controlar o acesso aos membros usando as palavras chave:
+    \begin{itemize}
+        \item \mintinline{java}{private} (\textbf{--} em UML): Ninguém fora da classe pode aceder
+        \item \mintinline{java}{public}  (\textbf{+} em UML): Todos fora da classe podem aceder
+        \item Há mais 2, mas ficam para mais tarde
+    \end{itemize}
+\end{itemize}
+\vfill
+
+\begin{block}{Qual usar?}
+\begin{itemize}
+    \item Regra geral (para simplicar):
+    \begin{itemize}
+        \item Atributos devem ser privados
+        \item Métodos devem ser públicos
+    \end{itemize}
+    \item Dito isto, há atributos que faz sentido serem públicos e métodos que faz sentido serem privados (quando tiverem mais experiência)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{public} \textit{vs} \mintinline{java}{private}}
+\begin{columns}
+\column[]{0.5\linewidth}
+\begin{minted}[fontsize=\scriptsize]{java}
+class Animal {
+    public String especie;
+    
+    public String getEspecie(){
+        return especie;
+    }
+
+    public void setEspecie(String e) {
+        especie = e;
+    }
+}
+
+class Treta {
+    public static void main(String[] args) {
+        Animal a = new Animal();
+        a.especie = "Carapau";              // OK
+        a.setEspecie("Galinha");            // OK
+        System.out.println(a.getEspecie()); // OK
+    }
+}
+\end{minted}
+
+\column[]{0.5\linewidth}
+\begin{minted}[fontsize=\scriptsize]{java}
+class Animal {
+    private String especie;
+    
+    private String getEspecie(){
+        return especie;
+    }
+    
+    public void setEspecie(String e) {
+        especie = e;
+    }
+}
+
+class Treta {
+    public static void main(String[] args) {
+        Animal a = new Animal();
+        a.especie = "Carapau";     // NÃO OK !!!
+        a.setEspecie("Galinha");   // OK
+        System.out.println(a.getEspecie());//NÃO OK!
+    }
+}
+\end{minted}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{Controlo de acesso a classes}
+\begin{itemize}
+    \item É possível controlar o acesso à classe por parte de código noutras classes e packages
+    \item Este é conteúdo para mais tarde, mas fica aqui um aviso muito importante:
+    \begin{alertblock}{AVISO!!!}
+        \begin{itemize}
+            \item Os exercícios no Moodle requerem que a classe onde está o \mintinline{java}{main} seja pública
+        \end{itemize}
+    \end{alertblock}
+\end{itemize}
+\begin{columns}
+\column[]{0.5\linewidth}
+\begin{itemize}
+    \item Funciona no Moodle:
+\begin{minted}{java}
+public class Treta {  // OK
+    public static void main(){
+        System.out.println("Olá");
+    }
+}
+\end{minted}
+\end{itemize}
+\column[]{0.5\linewidth}
+\begin{itemize}
+\item Não funciona no Moodle:
+\begin{minted}{java}
+class Treta {  // Falta o public!
+    public static void main(){
+        System.out.println("Olá");
+    }
+}
+\end{minted}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Tipo de dados \mintinline{java}{boolean}}
+\begin{itemize}
+    \item Apenas 2 valores possíveis (ou \mintinline{java}{null} se não for inicializado):
+    \begin{itemize}
+        \item Verdadeiro: \mintinline{java}{true}
+        \item false: \mintinline{java}{false} 
+    \end{itemize}
+\item São chamados de valores lógicos
+\item Existem operadores para operar estes valores
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Operadores lógicos}
+\begin{itemize}
+    \item \textbf{And} lógico: \mintinline{java}{&&}
+    \begin{itemize}
+        \item Resulta em \mintinline{java}{true} se \textbf{ambos} operadores forem \mintinline{java}{true}, ou \mintinline{java}{falso} caso contrário
+    \end{itemize}
+    \begin{minted}{java}
+    System.out.print(true && true);  // imprime true
+    System.out.print(true && false); // (ou false && true) imprime false
+    \end{minted}
+    \item \textbf{Or} lógico: \mintinline{java}{||}
+    \begin{itemize}
+        \item Resulta em \mintinline{java}{true} se \textbf{um} dos operandos for \mintinline{java}{true}, ou \mintinline{java}{false} caso contrário
+    \end{itemize}
+    \begin{minted}{java}
+    System.out.print(true || true);  // imprime true
+                                     // ou true||false; ou false||true 
+    System.out.print(false || false);// false (apenas se ambos false)
+    \end{minted}
+    \item \textbf{Not} lógico: \mintinline{java}{!}
+    \begin{itemize}
+        \item Operador unário que nega o valor lógico
+    \end{itemize}
+    \begin{minted}{java}
+    System.out.print(!true);   // imprime false
+    System.out.print(!false);  // imprime true
+    \end{minted}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Operadores lógicos: Resumo}
+\begin{center}
+        \begin{columns}
+        \column[]{0.33\linewidth}
+        \begin{tabular}{cc}
+            \textbf{Operação} & \textbf{Res}\\
+            \hline
+            \mintinline{java}{false && false} & \mintinline{java}{false}\\
+            \mintinline{java}{false && true} & \mintinline{java}{false}\\
+            \mintinline{java}{true && false} & \mintinline{java}{false}\\
+            \mintinline{java}{true && true} & \mintinline{java}{true}\\
+        \end{tabular}
+        
+        \column[]{0.33\linewidth}
+        \begin{tabular}{cc}
+            \textbf{Operação} & \textbf{Res}\\
+            \hline
+            \mintinline{java}{false || false} & \mintinline{java}{false}\\
+            \mintinline{java}{false || true} & \mintinline{java}{true}\\
+            \mintinline{java}{true || false} & \mintinline{java}{true}\\
+            \mintinline{java}{true || true} & \mintinline{java}{true}\\
+        \end{tabular}
+        
+        \column[]{0.33\linewidth}
+        \begin{tabular}{cc}
+            \textbf{Operação} & \textbf{Res}\\
+            \hline
+            \mintinline{java}{!false} & \mintinline{java}{true}\\
+            \mintinline{java}{!true} & \mintinline{java}{false}\\
+        \end{tabular}
+    \end{columns}
+\end{center}
+    \vfill
+    \begin{itemize}
+        \item Precedências: 
+        \begin{itemize}
+            \item $1^\text{st}$ \mintinline{java}{!}; $2^\text{nd}$ \mintinline{java}{&&}; $3^\text{rd}$ \mintinline{java}{||}
+            \item Pensem no negativo (menos unário), multiplicação e adição
+            \item Pode alterar-se com a utilização de parêntesis
+        \end{itemize}
+        \item Operadores lógicos têm precedência inferior à dos operadores relationais (a seguir)
+    \end{itemize}
+    
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Operadores relacionais}
+\begin{itemize}
+\item Não é frequente escrever-se \mintinline{java}{true} ou \mintinline{java}{false} diretamente em expressões
+\item Valores booleanos resultam, frequentemente, de operações relacionais (i.e., comparações)
+\item Um operador relacional estabelece a relação entre 2 valores
+\item Por exemplo: ``10 é menor que 20?''
+\begin{minted}{java}
+    System.out.print(10 < 20);  // imprime: true
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Operadores relacionais: Resumo}
+    \begin{center}
+        \begin{tabular}{clrr}
+            \rowcolor[HTML]{000000} 
+            {\color[HTML]{EFEFEF} \textbf{Operador}} & \multicolumn{1}{c}{\cellcolor[HTML]{000000}{\color[HTML]{EFEFEF} \textbf{Operação}}} & \multicolumn{1}{c}{\cellcolor[HTML]{000000}{\color[HTML]{EFEFEF} \textbf{Exemplo 1}}} & \multicolumn{1}{c}{\cellcolor[HTML]{000000}{\color[HTML]{EFEFEF} \textbf{Exemplo 2}}} \\
+            \textless{}                            & Menor que                                                                             & 10 \textless\ 20 → true                                                                & 20 \textless\ 10 → false                                                               \\
+            \rowcolor[HTML]{C0C0C0} 
+            \textgreater{}                         & Maior que                                                                          & 5 \textgreater\ 2 → true                                                               & 2 \textgreater\ 5 → false                                                              \\
+            \textless{}=                           & Menor ou igual que                                                                 & 8 \textless{}= 10 → true                                                              & 8 \textless{}= 8 → true                                                               \\
+            \rowcolor[HTML]{C0C0C0} 
+            \textgreater{}=                        & Maior ou igual que                                                              & 4 \textgreater{}= 1 → true                                                            & 4 \textgreater{}= 4 → true                                                            \\
+            ==                                     & Igual a                                                                              & 6 == 6 → true                                                                         & 3 == 6 → false                                                                        \\
+            \rowcolor[HTML]{C0C0C0} 
+            !=                                     & Não igual a (diferente)                                                              & 2 != 7 → true                                                                         & 8 != 8 → false                                                                       
+        \end{tabular}
+    \end{center}
+    \vfill
+    \begin{itemize}
+        \item Operadores relacionais têm precedência mais elevada que os lógicos
+        \item Pensar nos operadores relacionais como uma pergunta à qual a resposta apenas pode ser \mintinline{java}{true} ou \mintinline{java}{false}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Executar ou não executar}
+\begin{itemize}
+    \item Dependendo do resultado de uma operação relacional, podemos decidir se queremos, ou não executar uma (ou mais) instrução
+    \item A instrução \mintinline{java}{if} é uma das que permite fazer isso
+    \item Sintaxe:
+\begin{minted}{java}
+    if (valorLógico)
+        instruçãoAExecutar; 
+\end{minted}
+a instrução só será executada se o valor lógico for \mintinline{java}{true}
+\item Recordar que os valores lógicos resultam de operações relacionais (i.e., comparações)
+\item Se tivermos mais do que uma instrução a executar, utilizamos chavetas:
+    \begin{minted}{java}
+    if (valorLógico) {
+        instrução1;
+        instrução2;
+    }
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Executar de entre duas alternativas}
+\begin{itemize}
+    \item É possível executar alternativas dependendo do valor lógico
+    \begin{minted}{java}
+     if (valorLógico)
+        instruçãoAExecutar;   // executa se valorLógico for true
+     else
+        instruçãoAlternativa; // executa se nenhum dos valores 
+                              // lógicos anteriores for true
+    \end{minted}
+\item Notar que se uma das instruções (ou bloco de instruções) for executada, mais nenhuma no \mintinline{java}{if} será
+\item Aplica-se a mesma regra da utilização de chavetas para executar grupos de instruções
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Executar de entre \textbf{mais de duas} alternativas}
+\begin{itemize}
+\item É possível executar várias alternativas dependendo de vários valores lógicos
+\begin{minted}{java}
+    if (valorLógico1)
+        instruçãoAExecutar;    // executa se valorLógico for true
+    else if (valorLógico2)
+        instruçãoAlternativa1;
+    else
+        instruçãoAlternativa2; // executa se nenhum dos valores 
+                               // lógicos anteriores for true
+\end{minted}
+\item Podemos ter quantos \mintinline{java}{else if} desejarmos
+\item Notar que sempre que aparece \mintinline{java}{if}, tem de haver um valor lógico (i.e., condição)
+\item O \mintinline{java}{else} isolado apenas pode aparecer no fim (como alternativa final)
+\item Aplica-se a mesma regra da utilização de chavetas para executar grupos de instruções
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Muitas comparações com a mesma variável \mintinline{java}{int} (\mintinline{java}{==})}
+\begin{columns}[t]
+
+\column[]{0.25\linewidth}
+\begin{minted}[fontsize=\footnotesize]{java}
+    if (a == 5) {
+        s = 50;
+        a = 0;
+    } else if (a == 10) {
+        s = 2;
+        a = 5;
+    } else if (a == 20) {
+        s = 30;
+        a = 200;
+    } else {
+        s = 34;
+        a = 15;
+    }
+\end{minted}
+\column[]{0.5\linewidth}
+\begin{itemize}
+    \item \mintinline{java}{if} é complicado de ler se tivermos de ver se uma variável é um de muitos valores inteiros (ou strings)
+    \item Nesta situação recomenda-se a utilização da instrução \mintinline{java}{switch}
+    \item Notar que o \mintinline{java}{default} funciona como o \mintinline{java}{else} final, e também é opcional
+    \item O \mintinline{java}{break} impede que, depois de executar o código, a comparação continue e outro código no \mintinline{java}{switch} seja executado
+\end{itemize}
+\column[]{0.25\linewidth}
+\begin{minted}[fontsize=\footnotesize]{java}
+switch (a) {
+    case 5:
+        s = 50;
+        a = 0;
+        break;
+    case 10:
+        s = 2;
+        a = 5;
+        break;
+    case 20:
+        s = 30;
+        a = 200;
+        break;
+    default:
+        s = 34;
+        a = 15;
+}
+\end{minted}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Impressionar os/as amigos/amigas}
+
+
+
+\begin{minted}{java}
+        int a = 10;
+        
+        if (a == 10) {
+            System.out.print("Dez");
+        } else {
+            System.out.print("Outro");
+        }
+\end{minted}
+\begin{itemize}
+    \item O \mintinline{java}{if}$\ldots$\mintinline{java}{else} pode ser substituído pelo operador ternário condicional
+\end{itemize}
+\begin{minted}{java}
+        System.out.print(a==10 ? "Dez" : "Outro");
+\end{minted}
+
+\end{frame}
+
+\section{Capítulo 6}
+
+\begin{frame}[fragile]{\mintinline{python}{while}}
+\begin{itemize}
+    \item Quando não sabemos à partida o número de vezes que queremos repetir a instrução (ou bloco de instruções)
+    \item Sintaxe:
+    \begin{minted}{java}
+    while (condição) {
+        instrução1;
+        instrução2;
+    }
+    \end{minted}
+    \item As instruções repetem-se enquanto a \mintinline{java}{condição} for \mintinline{java}{true}
+    \item Alguma das instruções dentro do ciclo, terá de alterar o resultado da \mintinline{java}{condição}, senão repete para sempre
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{do} $\ldots$ \mintinline{java}{while}}
+    \begin{itemize}
+        \item Quando não sabemos à partida o número de vezes que queremos repetir as instruções
+        \item Mas queremos que execute as instruções \textbf{pelo menos 1 vez}
+        \item Sintaxe:
+        \begin{minted}{java}
+            do {
+                instrução1;
+                instrução2;
+            } while (condição);
+        \end{minted}
+        \item As instruções repetem-se enquanto a \mintinline{java}{condição} for \mintinline{java}{true}
+        \item Alguma das instruções dentro do ciclo, terá de alterar o resultado da \mintinline{java}{condição}, senão repete para sempre
+        \item Esta tem um ponto-e-vírgula no fim
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{for}}
+\begin{itemize}
+    \item Quando sabemos à partida o número de vezes que queremos executar as instruções
+    \begin{minted}{java}
+    for (variável; condição; atualização) {
+        instruções;
+    }
+    \end{minted}
+\item Executa enquanto a \mintinline{java}{condição} for \mintinline{java}{true}
+\item Podemos utilizar a \mintinline{java}{variável}:
+\begin{itemize}
+    \item para definir a condição
+    \item dentro do ciclo
+    \item na secção \mintinline{java}{atualização} (e.g., alterar a variável a cada passo)
+\end{itemize} 
+
+\begin{block}{Importante!}
+\begin{itemize}
+    \item a \mintinline{java}{variável} é `executada' antes de executar a \mintinline{java}{condição} e o bloco
+    \item a \mintinline{java}{condição} é `executada' antes de executar o bloco
+    \item a \mintinline{java}{atualização} é feita depois de executar o bloco
+\end{itemize}
+\end{block}
+
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{for}: exemplos}
+\begin{columns}
+\column[]{0.5\textwidth}
+\begin{minted}{java}
+    for (int i=0; i < 10; i=i+1) {
+        System.out.println(i);
+    }
+\end{minted}
+\begin{minted}{java}
+    for (int i=0; i < 10; i+=1) {
+        System.out.println(i);
+    }
+\end{minted}
+\begin{minted}{java}
+    for (int i=0; i < 10; i++) {
+        System.out.println(i);
+    }
+\end{minted}
+\column[]{0.5\textwidth}
+\begin{minted}{java}
+    for (int i=0; i < 10; i=i+5) {
+        System.out.println(i);
+    }
+\end{minted}
+\begin{minted}{java}
+    for (int i=0; i < 10; i+=5) {
+        System.out.println(i);
+    }
+\end{minted}
+\begin{minted}{java}
+    for (int i=10; i >= 0; i--) {
+        System.out.println(i);
+    }
+\end{minted}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{for}: mais um exemplo}
+\begin{itemize}
+    \item Calcular o valor da seguinte série:
+    $$S = 1000 + 100 + 10 + 1 + 0.1 + 0.01 + 0.001$$
+\end{itemize}
+\begin{onlyenv}<2>
+ \begin{minted}{java}
+     double s = 0.0;
+     for (double x = 1000; x >= 0.001; x /= 10) {
+         s += x;
+     }
+     System.out.format("%.2f\n", s);
+ \end{minted}
+\end{onlyenv}
+
+\end{frame}
+
+\end{document}
+
+

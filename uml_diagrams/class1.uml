@@ -1,0 +1,10 @@
+@startuml
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+hide circle
+skinparam classAttributeIconSize 0
+
+class Treta {
++{static} main(args: String[]): void
+}
+@enduml

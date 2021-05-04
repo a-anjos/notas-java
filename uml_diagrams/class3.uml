@@ -1,0 +1,27 @@
+@startuml
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+hide circle
+skinparam classAttributeIconSize 0
+
+class Zoo {
++{static} main(args: String[]): void
+}
+
+class Animal {
+~nome:String
+~Animal(nome:String)
+~getNome():String
+}
+
+
+object "a1:Animal" as a1{
+  nome = "Bobby"
+}
+
+object "a2:Animal" as a2 {
+  nome = "Pitucha"
+}
+
+'Animal -[hidden]-> Zoo
+@enduml

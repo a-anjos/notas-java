@@ -1,0 +1,15 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+
+class UmaClasse {
+- variavelDeInstancia: int
+-{static} variavelDeClasse: int
++{static} CONSTANTE_DE_CLASSE: int = 100
+
++ metodoDeInstancia(): int
++{static} metodoDeClasse(): int
+}
+@enduml

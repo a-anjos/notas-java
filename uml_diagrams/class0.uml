@@ -1,0 +1,8 @@
+@startuml
+hide circle
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+
+class UmaClasse {
+}
+@enduml

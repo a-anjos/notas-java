@@ -1,0 +1,24 @@
+@startuml
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+'tirar a letra
+hide circle
+'tirar simbolos
+skinparam classAttributeIconSize 0
+'nao sei o que e isto
+'skinparam nodesep 10
+'distancia entre classes
+skinparam ranksep 20
+
+class FichaUm {
+~exercicioUm():void
+~exercicioDois():void
+}
+
+
+class Fichas {
++{static} main(args: String[]): void
+}
+
+FichaUm -[hidden]-> Fichas
+@enduml
