@@ -872,16 +872,16 @@ class Treta {
     \item Este é conteúdo para mais tarde, mas fica aqui um aviso muito importante:
     \begin{alertblock}{AVISO!!!}
         \begin{itemize}
-            \item Os exercícios no Moodle requerem que a classe onde está o \mintinline{java}{main} seja pública
+            \item Alguns dos exercícios no Moodle podem requerer que a classe onde está o \mintinline{java}{main} seja pública
         \end{itemize}
     \end{alertblock}
 \end{itemize}
 \begin{columns}
 \column[]{0.5\linewidth}
 \begin{itemize}
-    \item Funciona no Moodle:
+\item Se isto não funcionar:
 \begin{minted}{java}
-public class Treta {  // OK
+class Treta {  // sem public
     public static void main(){
         System.out.println("Olá");
     }
@@ -890,9 +890,9 @@ public class Treta {  // OK
 \end{itemize}
 \column[]{0.5\linewidth}
 \begin{itemize}
-\item Não funciona no Moodle:
+    \item Experimentar isto:
 \begin{minted}{java}
-class Treta {  // Falta o public!
+public class Treta {  // com public
     public static void main(){
         System.out.println("Olá");
     }
@@ -1269,15 +1269,516 @@ switch (a) {
 \end{itemize}
 \begin{onlyenv}<2>
  \begin{minted}{java}
-     double s = 0.0;
+     double s = 0.0; // obrigatório, senão s pode conter qualquer coisa <> 0
      for (double x = 1000; x >= 0.001; x /= 10) {
          s += x;
      }
      System.out.format("%.2f\n", s);
  \end{minted}
 \end{onlyenv}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Revisão: Classe}
+\begin{columns}
+\column[]{0.6\linewidth}
+\begin{itemize}
+    \item Podemos ver uma classe como se fosse uma planta de uma casa
+    \begin{itemize}
+        \item A planta define as características das casas que serão feitas a partir desta (ninguém mora numa planta)
+        \item As casas feitas a partir desta são objetos dessa planta (a coisa concreta)
+    \end{itemize}
+\end{itemize}
+\column[]{0.4\linewidth}
+\begin{center}
+    \includegraphics[width=\linewidth]{./figures/blueprint}
+\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Revisão: Classe \textit{vs} Objeto}
+\begin{columns}
+\column[]{0.5\linewidth}
+\begin{center}
+    \includegraphics[width=\linewidth]{figures/car}
+\end{center}
+\column[]{0.5\linewidth}
+\begin{itemize}
+    \item \textbf{Classe} é uma espécie de desenho (i.e., planta) que define as características dos objetos que vamos produzir
+    \item \textbf{Objectos} são as coisas que fazemos tendo como base o desenho (i.e., a classe)
+    \item A classe define-se uma vez, e não queremos saber mais dela
+    \item O que nos interessa, no fim, são os objetos (ninguém consegue viajar num desenho, tem de ter um carro concreto)
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{O que já sabemos até agora}
+\begin{itemize}
+    \item Uma classe pode ser vista como a definição de um tipo (serve de molde)
+    \item Um objeto é um exemplo (i.e., instância) de um elemento desse \textit{tipo} (trabalhamos com os objetos)
+    \item Por exemplo, \mintinline{java}{"Olá"} e \mintinline{java}{"Adeus"} são duas instâncias da classe \mintinline{java}{String}
+    \item \mintinline{java}{"Olá"} tem as características definidas na classe \mintinline{java}{String}, e sabe responder às mensagens (i.e., métodos) definidas na classe \mintinline{java}{String}
+    \item Para criar um objeto (i.e., instância) de uma classe, utilizamos a palavra \mintinline{java}{new} seguida do nome do tipo (i.e., classe) do objeto que queremos criar (String é um caso especial que não obriga a isso)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo}
+\scriptsize
+\begin{columns}
+\column[t]{0.35\linewidth}
+\begin{itemize}
+    \item A ``planta'' (i.e., \textbf{classe}):
+\begin{minted}{java}
+class Animal {
+    static int MAX_IDADE = 15;
+    String nome;
+    
+    Animal(String nome) {
+        this.nome = nome;
+    }
+
+    String getNome() {
+        return nome;
+    }
+
+    void setNome(String nome) {
+        this.nome = nome;
+    }
+}
+\end{minted}
+\end{itemize}
+\column[t]{0.65\linewidth}
+\begin{itemize}
+\item Os \textbf{objetos}:
+\begin{minted}{java}
+Animal a1 = new Animal("Bobby");
+Animal a2 = new Animal("Tareco");
+Animal a3 = new Animal("Pituxa");
+\end{minted}
+\item Cada objeto é totalmente independente e:
+\begin{itemize}
+    \scriptsize
+    \item tem o seu próprio atributo \mintinline{java}{nome}
+\begin{minted}{java}
+System.out.println(a1.nome);  // imprime "Bobby"
+\end{minted}
+\item sabe responder às mensagens \mintinline{java}{getNome} e \mintinline{java}{setNome}\begin{minted}{java}
+System.out.println(a3.getNome());  // imprime "Pituxa"
+\end{minted}
+\end{itemize} 
+porque os objetos foram criados seguindo a informação na ``planta''
+\end{itemize}
+\vfill
+
+\begin{alertblock}{Importante!}
+ \begin{itemize}
+     \item Atributos ou métodos declarados como \mintinline{java}{static} não fazem parte do objeto
+     \item São da ``planta'', e chamados a partir do nome da classe e não do objeto
+     
+     Por exemplo: \mintinline{java}{Animal.MAX_IDADE}  \textit{vs} \mintinline{java}{a3.nome}
+ \end{itemize}
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Sobrecarga de construtores (dentro da classe, claro)}
+\begin{columns}
+\column[t]{0.37\linewidth}
+\scriptsize
+\begin{minted}{java}
+ public Animal() {
+    this.nome = "Bobby";
+ }
+
+ public Animal(String nome) {
+    this.nome = nome;
+ }
+
+ public Animal(String especie) {
+    this.especie = especie;
+ }
+
+ public Animal(int idade) {
+    this.idade = idade;
+ }
+
+ public Animal(String nome, int idade) {
+    this.nome = nome;
+    this.idade = idade;
+ }
+\end{minted}
+
+\column[t]{0.3\linewidth}
+\scriptsize
+\begin{itemize}
+\item O que o compilador vê:
+\begin{minted}{java}
+public Animal(void) {
+    this.nome = "Bobby";
+}
+
+public Animal(String) {
+    this.nome = nome;
+}
+
+public Animal(String) {
+    this.especie = especie;
+}
+
+public Animal(int) {
+    this.idade = idade;
+}
+
+public Animal(String, int) {
+    this.nome = nome;
+    this.idade = idade;
+}
+\end{minted}
+\end{itemize}
+
+\column[t]{0.38\linewidth}
+\scriptsize
+\begin{itemize}
+\item Para distinguir entre construtores, analisar:
+\begin{itemize}
+    \scriptsize
+    \item Quantidade de parâmetros
+    \item Tipo dos parâmetros
+    \item Ordem dos parâmetros
+\end{itemize}
+\item Se os 3 critérios forem iguais, não há forma de distinguir
+\item Por exemplo, não é possível distinguir entre o 2° e 3° construtores:
+\begin{minted}{java}
+    Animal a = new Animal("Olá");
+\end{minted}
+\item Qual dos 2 que recebe uma String está a ser chamado?!
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Sobrecarga de métodos}
+\begin{columns}
+\column[t]{0.55\linewidth}
+\begin{itemize}
+\item Vários métodos com mesmo nome
+\item Mesma lógica que para os construtores: métodos com o mesmo nome são considerados diferentes se:
+\begin{itemize}
+\item O número de parâmetros for diferente
+\item O tipo de parâmetros for diferente
+\item A ordem dos (tipos dos) parâmetros for diferente
+\end{itemize}
+\item Nesta análise, os nomes dos parâmetros são ignorados
+\item Compilador faz a mesma análise que um humano faria: Qual estou a chamar?
+\begin{minted}{java}
+    objeto.setInfo("Olá", 7);
+\end{minted}
+\end{itemize}
+\column[t]{0.45\linewidth}
+\begin{itemize}
+
+\begin{minted}{java}
+void setInfo(String) {
+}
+
+void setInfo(String, String) {
+}
+
+void setInfo(String, int) {
+}
+
+void setInfo(int, String) {
+}
+\end{minted}
+\item Não há qualquer confusão entre os anteriores
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{Construtores a chamar construtores}
+\begin{columns}
+\column[t]{0.5\linewidth}
+\begin{itemize}
+    \item Um construtor pode chamar outros construtores na mesma classe
+    \item Dentro de um construtor, referimo-nos a outro construtor da classe utilizando:
+    \begin{minted}{java}
+        this();
+    \end{minted}
+    \item Dentro dos parêntesis, colocamos os argumentos requeridos pelo construtor que queremos chamar
+    \item \mintinline{java}{this} tem de ser a primeira coisa a acontecer no construtor
+    \item O que vai acontecer?
+    \begin{minted}{java}
+     Animal a = new Animal();
+    \end{minted}
+\end{itemize}
+\column[t]{0.5\linewidth}
+\begin{minted}{java}
+class Animal {
+    String nome;
+    
+    Animal() {
+        // não pode haver código aqui
+        this("Desconhecido");
+        // pode haver mais código aqui
+    }
+    
+    Animal(String nome) {
+        this.nome = nome;
+    }
+}
+\end{minted}
+\end{columns}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]{Enumerados}
+\begin{itemize}
+\item Um enumerado pode ser visto como um tipo de dados, que apenas pode assumir os valores definidos nele
+\item Por exemplo:
+\begin{minted}{java}
+enum Cor {
+    VERMELHO, VERDE, AZUL
+}
+\end{minted}
+\item Os valores são escritos em maiúsculas visto que são constantes (é implícito)
+\item Cada constante tem um valor inteiro que inicia em 0 (pode ser alterado)
+\item Experimente imprimir as constantes
+\end{itemize}
 
 \end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{enum}: exemplos de utilização}
+    \scriptsize
+\begin{columns}
+\column[t]{0.5\linewidth}
+\begin{itemize}
+\item Normalmente:
+\begin{minted}{java}
+void printCor(Cor c) {
+    if (c == Cor.VERMELHO)
+        System.out.println("Cor vermelha");
+    else if (c == Cor.VERDE)
+        System.out.println("Cor verde");
+    else
+        System.out.println("Cor verde");
+}
+\end{minted}
+$\vdots$
+
+$\vdots$
+\begin{minted}{java}
+printCor(Cor.AZUL);
+\end{minted}
+\end{itemize}
+\column[t]{0.5\linewidth}
+\begin{itemize}
+    \item Num \mintinline{java}{switch}:
+\end{itemize}
+\begin{minted}{java}
+void printCor(Cor c) {
+    switch(c) {
+        VERMELHO:  // não utilizar o nome do enum
+            System.out.println("Cor vermelha");
+            break;
+        VERDE:
+            System.out.println("Cor verde");
+            break;
+        default:
+            System.out.println("Cor azul");
+    }
+}
+\end{minted}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{Package}
+    \begin{itemize}
+        \item De forma simples, uma pasta com ficheiros \texttt{.java} relacionados entre si
+        \item Exemplo: pasta \texttt{java/util} contém os ficheiros \texttt{Scanner.java}, \texttt{ArrayList.java}, etc.
+        \item Cada um desses ficheiros ``diz'' que faz parte dessa pasta por escrever
+        \begin{minted}{java}
+            package java.util;
+        \end{minted}
+        na primeira linha do código
+        \item Resumindo, para criar um package\footnote{No VSCode, se estivermos num projeto, apenas temos de escolher ``New Package'', o VSCode trata de tudo.}:
+        \begin{enumerate}
+            \item Criar a estutura de pastas desejada
+            \item Colocar os ficheiros \texttt{.java} lá dentro
+            \item Escrever na primeira linha de cada ficheiro \mintinline{java}{package nomes.das.pastas}
+        \end{enumerate}
+        \item O ponto a separar os nomes das pastas indicam que as pastas estão dentro das outras
+        \item Por exemplo, o package \mintinline{java}{java.util} corresponde à estrutura de pastas  \texttt{java/util}, i.e., a pasta \texttt{util} está dentro da pasta \texttt{java}
+    \end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Utilizar um package}
+\begin{itemize}
+\item Para utilizar os ``ficheiros'' que estão no package, temos de importá-los:
+\begin{minted}{java}
+    import nomepackage.NomeFicheiro;
+\end{minted}
+\item Quando fazemos \mintinline{java}{import pasta.Ficheiro}, a MV do Java precisa de saber onde está a pasta (i.e., package)
+\item A MV vai procurar nas pastas que estiverem definidas numa variável de sistema chamada \texttt{CLASSPATH}
+\item No terminal podemos dizer para procurar noutros sítios, utilizando o parâmetro \texttt{-cp}
+\item No VSCode:
+\begin{itemize}
+    \item Se o package foi criado com ``New Package'', o VSCode trata de tudo
+    \item Sem projeto criado, é-nos perguntado se queremos adicionar a pasta à \texttt{CLASSPATH}
+    \item Poderá ser necessário reiniciar o VSCode depois de adicionar-mos o package à \texttt{CLASSPATH}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\section{Exceções}
+
+\begin{frame}[fragile]{Lidar com situações excecionais}
+\scriptsize
+\begin{columns}
+\column[t]{0.45\linewidth}
+\begin{itemize}
+\item A forma habitual:
+\begin{minted}{java}
+double dividir(int a, int b) {
+    if (b == 0) {
+        System.err.println("Divisor = 0!");
+        System.exit(0);
+    }
+    return (double)a/b;
+}
+\end{minted}
+\item ou, utilizando asserções (OK apenas em modo de debugging):
+\begin{minted}{java}
+double dividir(int a, int b) {
+    assert b != 0;
+
+    return a/(double)b;
+}
+\end{minted}
+\item Em qualquer das situações, o programa termina sem dar oportunidade de recuperar do erro
+\end{itemize}
+\column[t]{0.55\linewidth}
+\begin{itemize}
+\item Uma forma mais elegante:
+\begin{minted}{java}
+double dividir(int a, int b) throws Exception {
+    if (b == 0) {
+        Exception e = new Exception();
+        throw e;
+        // ou, numa só linha, throw new Exception()
+    }
+    return (double)a/b;
+}
+\end{minted}
+\item O código que chamou este método vai ter oportunidade de decidir o que fazer
+\item Simplificando muito, o \mintinline{java}{throw} é um \mintinline{java}{return} especial
+\item O que é devolvido por esse ``\mintinline{java}{return}'' tem de ser indicado no lado direito da assinatura do método
+
+\end{itemize}
+
+\vspace{1cm}
+
+\textbf{Nota:} A classe \mintinline{java}{Exception} tem vários construtores
+\end{columns}
+\end{frame}
+
+\begin{frame}{Exceptions}
+\begin{itemize}
+    \item Condições anormais que interferem com a execução do programa (não durante a compilação)
+    \item É uma instância da classe \mintinline{java}{Exception}, ou de uma das suas subclasses
+    \item As exceções \textit{apanhadas} podem ser tratadas
+    \item Tratam-se através de blocos \mintinline{java}{try ... catch ... finally}
+    \begin{itemize}
+        \item \mintinline{java}{try}: \textbf{Tenta} executar o bloco de código
+        \item \mintinline{java}{catch}: \textbf{Apanha} a exceção, caso não tenha sido possível executar o código com sucesso
+        \item \mintinline{java}{finally}: não é obrigatório mas, se definido, é sempre executado (i.e., quer tenha havido exceção, quer não; mesmo que haja um \mintinline{java}{return})
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\mintinline{java}{try ... catch ... finally}}
+\begin{minted}{java}
+    try {
+        // código que pode gerar exceção
+        // inclui chamadas a métodos que podem gerar exceção
+    } catch (Exception e) {
+        // código que trata da exceção
+    } finally {
+        // é sempre executado
+        // libertar recursos se necessário
+    }
+\end{minted}
+
+\begin{itemize}
+    \item É possível ter vários \textit{catches}
+    \item Quando isso acontece deve colocar-se os \textit{catches} de exceções mais específicas primeiro (ver \href{https://www.java4us.com/wp-content/uploads/2018/06/exception_hierarachy_diagram.png}{hierarquia de exceções})
+    \item Os objetos do \textit{tipo} \mintinline{java}{Exception} sabem responder à mensagem \mintinline{java}{getMessage()}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Exceções: Exemplo}
+\scriptsize
+\begin{columns}
+\column[t]{0.5\linewidth}
+\begin{minted}{java}
+double dividir(int a, int b) throws Exception {
+    if (b == 0) {
+        throw new Exception("Ups...");
+    }
+    return a/(double)b;
+}
+\end{minted}
+\begin{itemize}
+
+\item Se não terminarmos o programa dentro de um \mintinline{java}{catch}, a exceção considera-se tratada e o programa continua
+\item A única situação em que o \mintinline{java}{finally} não é executado é se terminarmos o programa (i.e., \mintinline{java}{exit()}), ou se falhar a luz
+\item O que acontece se trocarmos a ordem dos catches?
+\end{itemize}
+\column[t]{0.5\linewidth}
+\begin{itemize}
+\item No \mintinline{java}{main}:
+\end{itemize}
+\begin{minted}{java}
+int n;
+double d;
+
+try {
+    Scanner sc = new Scanner(System.in);
+    n = sc.nextInt();
+    d = dividir(n)
+} catch (InputMismatchException e) {
+    System.err.print("Não introduziste um int!");
+    System.exit(0);  // decidi que é melhor parar
+} catch (Exception e) {
+    System.out.println(e.getMessage()); // ups...
+} finally {
+    sc.close();
+}
+\end{minted}
+\end{columns}
+\end{frame}
+
 
 \end{document}
 
