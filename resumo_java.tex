@@ -1,4 +1,5 @@
 \documentclass[portuguese, aspectratio=169, xcolor=table]{beamer}
+\synctex=1
 %\documentclass[handout]{beamer}  % don't show "pause slides"
 \usepackage{pgfpages}  % to allow notes on second screen
 %\setbeameroption{show notes on second screen}  % show notes with pympress
@@ -8,10 +9,11 @@
 \usepackage{arev}
 \usepackage[portuguese]{babel}
 
-\usetheme{Boadilla}
+%\usetheme{Boadilla}
 %\usetheme[style=light]{Nord}
 %\usecolortheme{Nord}
-\usecolortheme{seahorse}
+%\usecolortheme{seahorse}
+\usetheme[calcado]{giraldo}
 %\usecolortheme{beaver}
 
 
@@ -36,7 +38,7 @@
 
 
 \let\temp\ComputerMouse
-\renewcommand{\ComputerMouse}{{\LARGE\temp}} 
+\renewcommand{\ComputerMouse}{{\LARGE\temp}}
 
 %\definecolor{links}{HTML}{91dde0}
 \definecolor{links}{HTML}{2A1B81}
@@ -61,26 +63,26 @@
 %\date[INF10358M] % (optional)
 %{INF10358M -- Programming and Intelligent Systems}
 
-\logo{\includegraphics[height=0.5cm]{logo.png}}
+% \logo{\includegraphics[height=0.5cm]{logo.png}}
 
 
 \begin{document}
     \frame{\titlepage}
-    
-    
+
+
     \begin{frame}
         \frametitle{Tópicos}
         \tableofcontents
     \end{frame}
-    
-    
+
+
 %    \begin{frame}{Motivation}
 %        \begin{itemize}
-%            \item 
+%            \item
 %        \end{itemize}
 %    \end{frame}
-    
-    
+
+
 %    \section{Microjava}
 
 
@@ -179,7 +181,7 @@ StringBuilder sb = new StringBuilder();
 \column[]{0.5\linewidth}
     \begin{minted}{java}
     class UmaClasse {
-        
+
     }
 \end{minted}
 \column[]{0.5\linewidth}
@@ -191,9 +193,9 @@ StringBuilder sb = new StringBuilder();
 \item Notar que o nome da classe inicia com maiúscula e, depois, CamelCase
 \item Esta classe não pode ser executada diretamente porque não tem o método \mintinline{java}{main}
 \end{itemize}
-\end{frame}    
-    
-    
+\end{frame}
+
+
 \begin{frame}[fragile]{\mintinline{java}{main()}}
     \begin{itemize}
         \item Para ser possível executar um programa Java, uma das classes do programa tem de ter o método \mintinline{java}{main}
@@ -211,18 +213,18 @@ StringBuilder sb = new StringBuilder();
 \item \mintinline{java}{String[] args}: contém as strings passadas pelo terminal (o nome \mintinline{java}{args} é utilizado frequentemente, mas pode ser o que quisermos)
 \end{itemize}
 \end{frame}
-    
+
 
 \begin{frame}[fragile]{Programa mínimo (assumir ficheiro com nome \texttt{Treta.java})}
 \begin{columns}
 \column[t]{0.5\linewidth}
     \begin{minted}{java}
 class Treta {
-    
+
     public static void main(String[] args) {
-        
+
     }
-    
+
 }
 \end{minted}
 \column[t]{0.5\linewidth}
@@ -251,7 +253,7 @@ class FichaUm {
     void exercicioUm() {
         System.out.println("Olá mundo!");
     }
-    
+
     void exercicioDois() {
         System.out.println("Adeus mundo!");
     }
@@ -273,18 +275,18 @@ class Fichas {
 \end{columns}
 
 \end{frame}
-  
+
 \begin{frame}[fragile]{Programa com mais sentido (ficheiro \texttt{Zoo.java})}
 \begin{columns}
 \column[t]{0.5\linewidth}
 \begin{minted}[fontsize=\scriptsize]{java}
 class Animal {
     String nome;
-    
+
     Animal(String nome) {  // construtor
         this.nome = nome;
     }
-    
+
     String getNome() {
         return nome;
     }
@@ -311,7 +313,7 @@ class Zoo {
 \begin{flushright}
 \tiny    \textbf{NOTA:} Em UML 1.0 sublinhava-se o nome e tipo dos objetos (i.e., das instâncias)
 \end{flushright}
-\end{frame}  
+\end{frame}
 
 \begin{frame}[fragile]{Programa com \textit{ainda} mais sentido (ficheiro \texttt{Zoo.java})}
 \begin{columns}
@@ -319,11 +321,11 @@ class Zoo {
 \begin{minted}[fontsize=\scriptsize]{java}
 class Animal {
     private String nome;
-    
+
     public Animal(String nome) {  // construtor
         this.nome = nome;
     }
-    
+
     public String getNome() {
         return nome;
     }
@@ -346,7 +348,7 @@ class Zoo {
     \item Notar privado (--) \textit{vs} público (+)
 \end{itemize}
 \end{columns}
-\end{frame}  
+\end{frame}
 
 
 \begin{frame}[fragile]{Se o nome do animal não é conhecido à partida (ficheiro \texttt{Zoo.java})}
@@ -355,7 +357,7 @@ class Zoo {
 \begin{minted}[fontsize=\scriptsize]{java}
 class Animal {
     private String nome;
-    
+
     public String getNome() {
         return nome;
     }
@@ -379,7 +381,7 @@ class Zoo {
 \end{center}
 
 \end{columns}
-\end{frame}  
+\end{frame}
 
 
 \begin{frame}{Atributos (i.e., \textit{variáveis}) e métodos de instância \textit{vs} classe}
@@ -406,22 +408,22 @@ class Zoo {
     \includegraphics[width=\linewidth]{./uml_diagrams/class6}
 \end{center}
 \end{columns}
-\end{frame}  
+\end{frame}
 
 
 \section{Capítulo 3}
 \begin{frame}{Literais numéricos \textit{vs} Tipos numéricos (mais comuns)}
 \begin{itemize}
     \item \mintinline{java}{int}: não tem parte decimal
-    
+
     \hspace{0.25cm}
     \texttt{-5, 4, 8, 2000}
     \item \mintinline{java}{float}: tem parte decimal (basta sufixar com um \texttt{f})
-    
+
     \hspace{0.25cm}
     \texttt{-5f, 4f, 8.0f, 2000.5f}
     \item \mintinline{java}{double}: tem parte decimal e mais precisão que \mintinline{java}{float}
-    
+
     \hspace{0.25cm}
     \texttt{-5.0, 4.0, 8.0, 2000.5}
 \end{itemize}
@@ -430,7 +432,7 @@ class Zoo {
 \begin{frame}{Operações entre diferentes tipos}
 \begin{itemize}
     \item O valor final de uma operação é do tipo mais geral
-    \item Exemplo (com operador +, mas pode ser outro operador aritmético): 
+    \item Exemplo (com operador +, mas pode ser outro operador aritmético):
     \begin{itemize}
         \item \mintinline{java}{int + float} $\rightarrow$ \mintinline{java}{float}
         \item \mintinline{java}{int + double} $\rightarrow$ \mintinline{java}{double}
@@ -476,9 +478,9 @@ class Zoo {
     int n = (int)2.5;     // n contém apenas o valor 2!!!
 \end{minted}
 \item \mintinline{java}{float}, a variável toma o valor \mintinline{java}{Infinity}
-\end{itemize} 
+\end{itemize}
 
-\item A operação de cast tem precedência sobre as operações aritméticas 
+\item A operação de cast tem precedência sobre as operações aritméticas
 \end{itemize}
 \end{frame}
 
@@ -580,7 +582,7 @@ System.out.print("Idade é " + idade + ", e altura é " +  altura + "cm");
 \begin{minted}{java}
 System.out.format("A idade é %d, e a altura %f cm", idade, altura);
 \end{minted}
-        
+
 \item O \texttt{\%d} e \texttt{\%f}, são chamados conversores para inteiros (i.e.\ decimal integers) e não inteiros (i.e.\ floating point), respetivamente
 
 \item O formatador \texttt{\%f} permite controlar o número de casas decimais do número, e.g.\ 2 casas:
@@ -751,7 +753,7 @@ System.out.println("Olá".charAt(1) + "bom".charAt(0) + "dia");
 
 \begin{frame}[fragile]{Escrever no ecrã}
 \begin{itemize}
-    \item Em Java, ``ecrã'' diz-se: \mintinline{java}{System.out}\footnote{\mintinline{java}{out} é, um atributo da classe \mintinline{java}{System}, instância da classe \mintinline{java}{PrintStream} e que a JVM `canaliza' para o ecrã} 
+    \item Em Java, ``ecrã'' diz-se: \mintinline{java}{System.out}\footnote{\mintinline{java}{out} é, um atributo da classe \mintinline{java}{System}, instância da classe \mintinline{java}{PrintStream} e que a JVM `canaliza' para o ecrã}
     \item Podemos escrever no ecrã por enviar a mensagem \mintinline{java}{print} ao ``ecrã''
 \begin{minted}{java}
     System.out.print("Olá");
@@ -819,7 +821,7 @@ System.out.println("Olá".charAt(1) + "bom".charAt(0) + "dia");
 \begin{minted}[fontsize=\scriptsize]{java}
 class Animal {
     public String especie;
-    
+
     public String getEspecie(){
         return especie;
     }
@@ -843,11 +845,11 @@ class Treta {
 \begin{minted}[fontsize=\scriptsize]{java}
 class Animal {
     private String especie;
-    
+
     private String getEspecie(){
         return especie;
     }
-    
+
     public void setEspecie(String e) {
         especie = e;
     }
@@ -908,7 +910,7 @@ public class Treta {  // com public
     \item Apenas 2 valores possíveis (ou \mintinline{java}{null} se não for inicializado):
     \begin{itemize}
         \item Verdadeiro: \mintinline{java}{true}
-        \item false: \mintinline{java}{false} 
+        \item false: \mintinline{java}{false}
     \end{itemize}
 \item São chamados de valores lógicos
 \item Existem operadores para operar estes valores
@@ -932,7 +934,7 @@ public class Treta {  // com public
     \end{itemize}
     \begin{minted}{java}
     System.out.print(true || true);  // imprime true
-                                     // ou true||false; ou false||true 
+                                     // ou true||false; ou false||true
     System.out.print(false || false);// false (apenas se ambos false)
     \end{minted}
     \item \textbf{Not} lógico: \mintinline{java}{!}
@@ -959,7 +961,7 @@ public class Treta {  // com public
             \mintinline{java}{true && false} & \mintinline{java}{false}\\
             \mintinline{java}{true && true} & \mintinline{java}{true}\\
         \end{tabular}
-        
+
         \column[]{0.33\linewidth}
         \begin{tabular}{cc}
             \textbf{Operação} & \textbf{Res}\\
@@ -969,7 +971,7 @@ public class Treta {  // com public
             \mintinline{java}{true || false} & \mintinline{java}{true}\\
             \mintinline{java}{true || true} & \mintinline{java}{true}\\
         \end{tabular}
-        
+
         \column[]{0.33\linewidth}
         \begin{tabular}{cc}
             \textbf{Operação} & \textbf{Res}\\
@@ -981,7 +983,7 @@ public class Treta {  // com public
 \end{center}
     \vfill
     \begin{itemize}
-        \item Precedências: 
+        \item Precedências:
         \begin{itemize}
             \item $1^\text{st}$ \mintinline{java}{!}; $2^\text{nd}$ \mintinline{java}{&&}; $3^\text{rd}$ \mintinline{java}{||}
             \item Pensem no negativo (menos unário), multiplicação e adição
@@ -989,7 +991,7 @@ public class Treta {  // com public
         \end{itemize}
         \item Operadores lógicos têm precedência inferior à dos operadores relationais (a seguir)
     \end{itemize}
-    
+
 \end{frame}
 
 
@@ -1010,17 +1012,17 @@ public class Treta {  // com public
 \begin{frame}{Operadores relacionais: Resumo}
     \begin{center}
         \begin{tabular}{clrr}
-            \rowcolor[HTML]{000000} 
+            \rowcolor[HTML]{000000}
             {\color[HTML]{EFEFEF} \textbf{Operador}} & \multicolumn{1}{c}{\cellcolor[HTML]{000000}{\color[HTML]{EFEFEF} \textbf{Operação}}} & \multicolumn{1}{c}{\cellcolor[HTML]{000000}{\color[HTML]{EFEFEF} \textbf{Exemplo 1}}} & \multicolumn{1}{c}{\cellcolor[HTML]{000000}{\color[HTML]{EFEFEF} \textbf{Exemplo 2}}} \\
             \textless{}                            & Menor que                                                                             & 10 \textless\ 20 → true                                                                & 20 \textless\ 10 → false                                                               \\
-            \rowcolor[HTML]{C0C0C0} 
+            \rowcolor[HTML]{C0C0C0}
             \textgreater{}                         & Maior que                                                                          & 5 \textgreater\ 2 → true                                                               & 2 \textgreater\ 5 → false                                                              \\
             \textless{}=                           & Menor ou igual que                                                                 & 8 \textless{}= 10 → true                                                              & 8 \textless{}= 8 → true                                                               \\
-            \rowcolor[HTML]{C0C0C0} 
+            \rowcolor[HTML]{C0C0C0}
             \textgreater{}=                        & Maior ou igual que                                                              & 4 \textgreater{}= 1 → true                                                            & 4 \textgreater{}= 4 → true                                                            \\
             ==                                     & Igual a                                                                              & 6 == 6 → true                                                                         & 3 == 6 → false                                                                        \\
-            \rowcolor[HTML]{C0C0C0} 
-            !=                                     & Não igual a (diferente)                                                              & 2 != 7 → true                                                                         & 8 != 8 → false                                                                       
+            \rowcolor[HTML]{C0C0C0}
+            !=                                     & Não igual a (diferente)                                                              & 2 != 7 → true                                                                         & 8 != 8 → false
         \end{tabular}
     \end{center}
     \vfill
@@ -1038,7 +1040,7 @@ public class Treta {  // com public
     \item Sintaxe:
 \begin{minted}{java}
     if (valorLógico)
-        instruçãoAExecutar; 
+        instruçãoAExecutar;
 \end{minted}
 a instrução só será executada se o valor lógico for \mintinline{java}{true}
 \item Recordar que os valores lógicos resultam de operações relacionais (i.e., comparações)
@@ -1060,7 +1062,7 @@ a instrução só será executada se o valor lógico for \mintinline{java}{true}
      if (valorLógico)
         instruçãoAExecutar;   // executa se valorLógico for true
      else
-        instruçãoAlternativa; // executa se nenhum dos valores 
+        instruçãoAlternativa; // executa se nenhum dos valores
                               // lógicos anteriores for true
     \end{minted}
 \item Notar que se uma das instruções (ou bloco de instruções) for executada, mais nenhuma no \mintinline{java}{if} será
@@ -1078,7 +1080,7 @@ a instrução só será executada se o valor lógico for \mintinline{java}{true}
     else if (valorLógico2)
         instruçãoAlternativa1;
     else
-        instruçãoAlternativa2; // executa se nenhum dos valores 
+        instruçãoAlternativa2; // executa se nenhum dos valores
                                // lógicos anteriores for true
 \end{minted}
 \item Podemos ter quantos \mintinline{java}{else if} desejarmos
@@ -1144,7 +1146,7 @@ switch (a) {
 
 \begin{minted}{java}
         int a = 10;
-        
+
         if (a == 10) {
             System.out.print("Dez");
         } else {
@@ -1210,7 +1212,7 @@ switch (a) {
     \item para definir a condição
     \item dentro do ciclo
     \item na secção \mintinline{java}{atualização} (e.g., alterar a variável a cada passo)
-\end{itemize} 
+\end{itemize}
 
 \begin{block}{Importante!}
 \begin{itemize}
@@ -1338,7 +1340,7 @@ switch (a) {
 class Animal {
     static int MAX_IDADE = 15;
     String nome;
-    
+
     Animal(String nome) {
         this.nome = nome;
     }
@@ -1371,7 +1373,7 @@ System.out.println(a1.nome);  // imprime "Bobby"
 \item sabe responder às mensagens \mintinline{java}{getNome} e \mintinline{java}{setNome}\begin{minted}{java}
 System.out.println(a3.getNome());  // imprime "Pituxa"
 \end{minted}
-\end{itemize} 
+\end{itemize}
 porque os objetos foram criados seguindo a informação na ``planta''
 \end{itemize}
 \vfill
@@ -1380,7 +1382,7 @@ porque os objetos foram criados seguindo a informação na ``planta''
  \begin{itemize}
      \item Atributos ou métodos declarados como \mintinline{java}{static} não fazem parte do objeto
      \item São da ``planta'', e chamados a partir do nome da classe e não do objeto
-     
+
      Por exemplo: \mintinline{java}{Animal.MAX_IDADE}  \textit{vs} \mintinline{java}{a3.nome}
  \end{itemize}
 \end{alertblock}
@@ -1525,13 +1527,13 @@ void setInfo(int, String) {
 \begin{minted}{java}
 class Animal {
     String nome;
-    
+
     Animal() {
         // não pode haver código aqui
         this("Desconhecido");
         // pode haver mais código aqui
     }
-    
+
     Animal(String nome) {
         this.nome = nome;
     }
@@ -1781,5 +1783,4 @@ try {
 
 
 \end{document}
-
 
