@@ -1766,7 +1766,7 @@ double d;
 try {
     Scanner sc = new Scanner(System.in);
     n = sc.nextInt();
-    d = dividir(n)
+    d = dividir(5, n)
 } catch (InputMismatchException e) {
     System.err.print("Não introduziste um int!");
     System.exit(0);  // decidi que é melhor parar
@@ -1779,6 +1779,218 @@ try {
 \end{columns}
 \end{frame}
 
+\section{Arrays e coleções}
+
+\begin{frame}[fragile]{Arrays: criação}
+\begin{itemize}
+\item Declaração (1 linha de ``caixas''):
+\begin{minted}{java}
+    int[] arrayInts;  // menos legível: int arrayInts[]
+    double[] arrayDoubles;
+    Cat[] arrayGatos;
+\end{minted}
+\item Instanciação:
+\begin{minted}{java}
+    arrayInts = new int[5]; // apenas reservámos espaço para ints
+    arrayDoubles = new double[5];
+    arrayGatos = new Cat[5];  // apenas reservámos espaço p/objetos Cat
+\end{minted}
+\item De uma só vez:
+\begin{minted}{java}
+    int[] arrayInts = new int[5];
+    double[] arrayDoubles = new double[5];
+    Cat[] arrayGatos = new Cat[5];
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Array: utilização}
+\begin{itemize}
+    \item Armazenamento:
+    \begin{minted}{java}
+    arrayInts[0] = 100;  // na primeira pos do array
+    arrayInts[arrayInts.length - 1] = 150;  // notar atributo dos arrays
+    arrayGatos[0] = new Cat("Patareco");  // notar criação do objeto
+    \end{minted}
+    \item Acesso:
+\begin{minted}{java}
+    int a = arrayInts[0];  // 'a' fica com 100
+    Cat c = arrayGatos[0];  // 'c' passa a referir o objeto
+\end{minted}
+\item O que vai acontecer?
+\begin{minted}{java}
+    a = 20;
+    System.out.print(arrayInts[0]);
+    c.setName("Tico");
+    System.out.print(arrayGatos[0].getName());
+\end{minted}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Iterar sobre arrays}
+\begin{itemize}
+\item Opção 1:
+\begin{minted}{java}
+    for (int i = 0; i < arrayGatos.legth; i++) {
+        System.out.println(arrayGatos[i].getName());
+    }
+\end{minted}
+\item Opção 2 (AKA \textit{for-each}):
+\begin{minted}{java}
+    for (Cat c : arrayGatos) {
+        System.out.println(c.getName());
+    }
+
+    for (int i : arrayInts) {
+        System.out.println(i);
+    }
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Arrays multi-dimensionais}
+\begin{itemize}
+    \item Mesmo princípio que nos unidimensionais
+    \item Declaração e instanciação (uma matriz de ``caixas''):
+    \begin{minted}{java}
+    int[][] arrayInts = new int[3][4]; // 2D c/3 linhas e 4 colunas
+    Cat[][] arrayGatos = new Cat[3][4]; // dá para 12 gatos
+    \end{minted}
+\item Cada nova dimensão (max. 255) necessita de um conjunto novo de parêntesis retos
+\begin{minted}{java}
+    double[][][] arrayD = new double[3][4][3]  // um cubo c/36 'caixas'
+\end{minted}
+\item Armazenamento e acesso:
+\begin{minted}{java}
+    arrayGatos[0][0] = new Cat("Miau"); // primeira 'célula'
+    Cat g = arrayGatos[0][0];
+    System.out.print(arrayGatos[0][0]); // ou g
+\end{minted}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Iterar sobre arrays multi-dimensionais}
+\begin{minted}{java}
+    for (int l = 0; l < arrayGatos.length; l++) {
+        for (int c = 0; c < arrayGatos[0].length; c++) {
+            Cat gato = arrayGatos[l][c];  // na linha l e coluna c
+            System.out.print(gato.getName());
+        }
+    }
+\end{minted}
+\begin{itemize}
+    \item Para saber o tamanho da segunda dimensão, perguntar a uma das linhas se todas tiverem o mesmo comprimento, senão, perguntar a \mintinline{java}{arrayGatos[l].length}
+\end{itemize}
+\begin{minted}{java}
+    for (Cat[] linha : arrayGatos) {  // para cada linha de Cats
+        for (Cat gato : linha) {  // p/cada Cat da linha (i.e. do array de Cat)
+            System.out.print(gato.getName());
+        }
+    }
+\end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Outras formas de criar arrays}
+\begin{minted}{java}
+    int[] a = {1, 2, 3};  // 'a' tem length 3, e os valores passados
+
+    Cat[] cats = {new Cat("Miau"), new Cat("Lulu")};
+
+    int[][] b = {{1, 2, 3}, {4, 5}};  // 2D, mas linhas c/lengths diferentes
+
+    int[][] c = new int[4][]; // 2D, pode referir 4 linhas, mas não existem
+    for (int i = 0; i < c.length; i++)
+        c[i] = new int[5];  // criar linhas c/length=5, mas podem ser difs
+\end{minted}
+\vfill
+
+\begin{itemize}
+    \item Uma forma mais estranha:
+\end{itemize}
+\begin{minted}{java}
+    int[] a = new int[]{1, 2, 3};
+\end{minted}
+\end{frame}
+
+
+\begin{frame}{Collections}
+\begin{itemize}
+    \item Das mais utilizadas: \mintinline{java}{ArrayList} e \mintinline{java}{LinkedList}
+    \item Ambas fazem exatamente o mesmo, mas internamente funcionam de forma diferente
+    \item Fazem o mesmo, porque ambas implementam a interface \mintinline{java}{List}
+    \item Uma interface é algo que define o que fazer e não como fazer
+    \item Uma classe que implementa uma interface, está a assinar um contrato:
+    
+    \begin{quotation}
+        Comprometo-me a implementar os comportamentos definidos na interface
+    \end{quotation}
+\item Tanto a \mintinline{java}{ArrayList} como \mintinline{java}{LinkedList} se comprometem a funcionar como Lists
+\item Assim, ambas têm de implementar os comportamentos definidos em \mintinline{java}{List}:
+\href{https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html}{https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{ArrayList} e \mintinline{java}{LinkedList}}
+\begin{itemize}
+    \item Declaração:
+    \begin{minted}{java}
+    List<Integer> listaInts; // ou ArrayList<Integer>, não recomendado!
+    List<Cat> listaGatos;    // ou LinkedList<Cat>, não recomendado!
+    \end{minted}
+    \item Instanciação:
+    \begin{minted}{java}
+    listaInts = new ArrayList<>();
+    listaGatos = new LinkedList<>(); // ou LinkedList<Cat>(), redundante! 
+    \end{minted}
+\item Ou, de uma só vez: \mintinline{java}{List<Cat> listaGatos = new LinkedList<>();}
+\item \textbf{Notas}:
+\begin{itemize}
+    \item Diamond operator \mintinline{java}{<>} permite indicar que tipo de objetos serão armazenados na \mintinline{java}{List}
+    \item Apenas podemos armazenar objetos nas \mintinline{java}{List}s, i.e., não podemos armazenar tipos primitivos como \mintinline{java}{int}, daí termos \mintinline{java}{List<Integer>} e não \mintinline{java}{List<int>}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplos de utilização}
+\begin{minted}{java}
+    List<Integer> numeros = new ArrayList<>(); // ou LinkedList<>()
+    numeros.add(new Integer(4));
+    
+    if (numeros.size() > 0) {
+        System.out.println(numeros.get(0));
+    }
+
+
+    List<Cat> gatos = new ArrayList<>(); // ou LinkedList<>()    
+    gatos.add(new Cat("Miau"));
+    
+    if (gatos.size() > 0) {
+        System.out.println(gatos.get(0).getName());
+    }
+\end{minted}
+\end{frame}
+
+
+\begin{frame}[fragile]{Iterar sobre \mintinline{java}{List}s}
+ \begin{itemize}
+     \item O mesmo princípio que iterar sobre qualquer outro iterável
+ \end{itemize}
+\begin{minted}{java}
+    for (int i = 0; i < numeros.size(); i++)
+        System.out.println(numeros.get(i));
+    
+    for (int n : numeros)
+        System.out.println(n);
+
+    for (int i = 0; i < gatos.size(); i++)
+        System.out.println(gatos.get(i).getName());
+    
+    for (Cat c : gatos)
+        System.out.println(c);
+\end{minted}
+\end{frame}
 
 \end{document}
 
