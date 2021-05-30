@@ -1,0 +1,29 @@
+@startuml
+skinparam dpi 300
+hide circle
+skinparam classAttributeIconSize 0
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+
+class Rato {
+~ nSerie: int
+~ marca: String
+~ resolucao: int
+}
+
+class PlacaRede {
+~ nSerie: int
+~ marca: String
+~ velocidade: int
+}
+
+class GravadorCD {
+~ nSerie: int
+~ marca: String
+~ lightScribe: bool
+}
+
+
+Rato -[hidden] PlacaRede
+PlacaRede -[hidden] GravadorCD
+@enduml

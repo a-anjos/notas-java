@@ -26,6 +26,8 @@
 \usepackage{menukeys}
 \usepackage{fontawesome}
 \usepackage{marvosym}
+\usepackage{multicol}
+\usepackage{arydshln}
 
 %\usepackage{pgf-umlcd}
 %\usepackage{aeguill}
@@ -68,10 +70,17 @@
     \frame{\titlepage}
     
     
-    \begin{frame}
-        \frametitle{Tópicos}
+%    \begin{frame}
+%        \frametitle{Tópicos}
+%        \tableofcontents
+%    \end{frame}
+
+
+\begin{frame}{\contentsname}
+    \begin{multicols}{2}
         \tableofcontents
-    \end{frame}
+    \end{multicols}
+\end{frame}
     
     
 %    \begin{frame}{Motivation}
@@ -84,7 +93,7 @@
 %    \section{Microjava}
 
 
-\section{Capítulo 1 e 2}
+\section{Conceitos introdutórios}
 
 \begin{frame}{Convenções}
 \begin{itemize}
@@ -409,7 +418,7 @@ class Zoo {
 \end{frame}  
 
 
-\section{Capítulo 3}
+\section{Tipos e operadores}
 \begin{frame}{Literais numéricos \textit{vs} Tipos numéricos (mais comuns)}
 \begin{itemize}
     \item \mintinline{java}{int}: não tem parte decimal
@@ -549,6 +558,7 @@ $\pm \mintinline{java}{Infinity} \times 0$      &  \mintinline{java}{NaN}\\
 \end{block}
 \end{frame}
 
+\section{Formatação de output}
 
 \begin{frame}[fragile]{Formatar números com \mintinline{java}{DecimalFormat}}
 \begin{itemize}
@@ -615,6 +625,8 @@ System.out.format("A a altura é %.2f cm", altura);
 \end{frame}
 
 
+
+\section{Classes e métodos úteis}
 \begin{frame}[fragile]{\mintinline{java}{String}: Métodos úteis}
 \begin{itemize}
 \item \mintinline{java}{int length()}: Devolve o tamanho da string
@@ -637,6 +649,11 @@ System.out.format("A a altura é %.2f cm", altura);
 \item \mintinline{java}{String concat(String)}: Concatena as duas strings
 \begin{minted}{java}
     System.out.println("Olá".concat(" Maria"));  // "Olá Maria"
+\end{minted}
+
+\item \mintinline{java}{public int indexOf(char)}: Devolve posição do caráter (um \mintinline{java}{int} na realidade)
+\begin{minted}{java}
+    System.out.println("Olá".indexOf('o'));  // imprime 1
 \end{minted}
 \end{itemize}
 \end{frame}
@@ -783,7 +800,7 @@ System.out.println("Olá".charAt(1) + "bom".charAt(0) + "dia");
 \end{itemize}
 \end{frame}
 
-\section{Capítulo 4}
+\section{Controlo de acesso aos membros}
 \begin{frame}{Controlo de acesso aos membros da classe}
 \begin{itemize}
     \item Os membros de uma classe são os:
@@ -902,7 +919,7 @@ public class Treta {  // com public
 \end{columns}
 \end{frame}
 
-
+\section{Operadores lógicos, relacionais, e decidir}
 \begin{frame}{Tipo de dados \mintinline{java}{boolean}}
 \begin{itemize}
     \item Apenas 2 valores possíveis (ou \mintinline{java}{null} se não for inicializado):
@@ -1160,7 +1177,7 @@ switch (a) {
 
 \end{frame}
 
-\section{Capítulo 6}
+\section{Ciclos}
 
 \begin{frame}[fragile]{\mintinline{python}{while}}
 \begin{itemize}
@@ -1281,7 +1298,7 @@ switch (a) {
 
 
 
-
+\section{Revisões}
 
 \begin{frame}{Revisão: Classe}
 \begin{columns}
@@ -1388,6 +1405,7 @@ porque os objetos foram criados seguindo a informação na ``planta''
 \end{frame}
 
 
+\section{Sobrecarga de construtores e de métodos}
 
 \begin{frame}[fragile]{Sobrecarga de construtores (dentro da classe, claro)}
 \begin{columns}
@@ -1515,7 +1533,7 @@ void setInfo(int, String) {
         this();
     \end{minted}
     \item Dentro dos parêntesis, colocamos os argumentos requeridos pelo construtor que queremos chamar
-    \item \mintinline{java}{this} tem de ser a primeira coisa a acontecer no construtor
+    \item \mintinline{java}{this(...)} tem de ser a primeira coisa a acontecer no construtor
     \item O que vai acontecer?
     \begin{minted}{java}
      Animal a = new Animal();
@@ -1542,7 +1560,7 @@ class Animal {
 
 
 
-
+\section{Enumerados}
 
 
 \begin{frame}[fragile]{Enumerados}
@@ -1606,6 +1624,7 @@ void printCor(Cor c) {
 \end{columns}
 \end{frame}
 
+\section{Packages}
 
 \begin{frame}[fragile]{Package}
     \begin{itemize}
@@ -1818,7 +1837,7 @@ try {
     int a = arrayInts[0];  // 'a' fica com 100
     Cat c = arrayGatos[0];  // 'c' passa a referir o objeto
 \end{minted}
-\item O que vai acontecer?
+\item O que vai acontecer? (considere as instruções acima)
 \begin{minted}{java}
     a = 20;
     System.out.print(arrayInts[0]);
@@ -1988,8 +2007,328 @@ try {
         System.out.println(gatos.get(i).getName());
     
     for (Cat c : gatos)
-        System.out.println(c);
+        System.out.println(c.getName());
 \end{minted}
+\end{frame}
+
+\section{Herança}
+
+\begin{frame}{Herança}
+\begin{itemize}
+    \item Mecanismo que permite criar ``tipos de dados'' (i.e., classes) mais especializados (mais específicos)
+    \item Quando \textit{especializar}?
+    \begin{itemize}
+        \item Quando classes (dum mesmo domínio) começam a partilhar vários membros em comum 
+        \item Normalmente, é óbvio:
+    \end{itemize} 
+\end{itemize}
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{./uml_diagrams/class7}
+\end{center}
+\end{frame}
+
+\begin{frame}{Solução}
+\begin{columns}
+\column[]{0.5\linewidth}
+\begin{center}
+    \includegraphics[width=\linewidth]{./uml_diagrams/class8}
+\end{center}
+\column[]{0.5\linewidth}
+\begin{itemize}
+    \item A seta lê-se \textit{is a}
+    \item Rato \textit{is a} Periférico, etc.
+    \item A direção da seta é importante, ou seja, não podemos dizer ``Periferico \textit{is a} Rato''
+    \item Se ao lermos o diagrama a relação \textit{is a} não fizer sentido,  cuidado!
+    \item Periférico é um tipo mais geral
+    \item Rato é um tipo especializado de Periférico
+    \item As subclasses herdam os membros da superclasse
+    \item Os objetos da subclasse sabem responder às mensagens definidas na superclasse, porque \textit{is a}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{UML \textit{vs.}\ Java}
+\begin{columns}
+\column[]{0.5\linewidth}
+\begin{center}
+    \includegraphics[width=\linewidth]{./uml_diagrams/class8}
+\end{center}
+\column[]{0.5\linewidth}
+\scriptsize
+\begin{minted}{java}
+    class Periferico {
+        int nSerie;
+        String marca;
+    }
+    
+    class Rato extends Periferico {
+        int resolucao;
+    }
+    
+    class PlacaRede extends Periferico {
+        int velocidade;
+    }
+    
+    class GravadorCD extends Periferico {
+        boolean lightScribe;
+    }
+\end{minted}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Instanciar subclasse}
+\begin{columns}
+    \column[]{0.5\linewidth}
+    \begin{center}
+        \includegraphics[width=\linewidth]{./uml_diagrams/class8}
+    \end{center}
+    \column[]{0.5\linewidth}
+    \begin{minted}{java}
+    Rato jerry = new Rato();
+    \end{minted}
+\begin{itemize}
+    \item Podemos imaginar um objeto em memória com o seguinte aspeto:
+    \begin{center}
+        \begin{tabular}{|c|}
+            \hline\\
+            \textbf{:Periferico}\\
+            \hline\\
+            nSerie = 0\\
+            marca = null\\
+            \hline
+            \hdashline\\
+            \hline
+            jerry : \textbf{Rato}\\
+            \hline\\
+            resolucao = 0\\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Instanciar subclasse $\ldots$}
+\begin{itemize}
+    \item Notas importantes:
+    \begin{itemize}
+        \item Quando instanciamos uma subclasse, se a superclasse:
+        \begin{itemize}
+            \item não tiver um construtor definido, a JVM chama o construtor vazio da superclasse automaticamente
+            \item tiver construtor definido, é da responsabilidade da subclasse chamar o construtor da superclasse 
+        \end{itemize}
+    \item A chamada ao construtor da superclasse é feita:
+    \begin{itemize}
+        \item  no construtor da subclasse, e é a primeira coisa a fazer antes de qualquer outra coisa
+        \item através de \mintinline{java}{super()}, i.e., \mintinline{java}{super()} refere-se ao construtor da superclasse e, poderá ter, ou não, argumentos (i.e., depende do construtor da superclasse)
+    \end{itemize}
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo}
+    \begin{columns}  
+        \column[]{0.4\linewidth}
+        \scriptsize
+\begin{minted}{java}
+    class Periferico {
+        int nSerie;
+        String marca;
+        
+        Periferico(int n, String m) {
+            nSerie = n;
+            marca = m;
+        }
+    
+        int getSerie() {
+            return nSerie;
+        }
+    
+        void setSerie(int n) {
+            nSerie = n;
+        }
+    }
+\end{minted}
+\column[]{0.6\linewidth}
+        \scriptsize
+\begin{minted}{java}   
+    class Rato extends Periferico {
+        int resolucao;
+        
+        Rato() {
+            super(0, "Nada");
+            resolucao = 0;
+        }
+        
+        Rato(int n, String s, int res) {
+            super(n, s);
+            resolucao = res;
+        }
+    }
+    \end{minted}
+\begin{itemize}
+    \item No \mintinline{java}{main}:
+\begin{minted}{java}
+Rato r1 = new Rato();
+Rato r2 = new Rato(123, "Logitech", 300);
+System.out.print(r1.getSerie());  // 0
+System.out.print(r2.getSerie());  // 123
+\end{minted}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Class abstrata}
+\begin{itemize}
+    \item Uma classe que tem um ou mais métodos sem implementação (i.e., abstratos)
+    \item Uma classe abstrata tem de ser declarada como \mintinline{java}{absract}, assim como todos os métodos sem corpo
+    \item Quem herda dessa classe é obrigado a implementar os métodos abstratos, ou também tem de ser declarada como abstrata
+    \item Uma classe abstrata não pode ser instanciada
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+\begin{columns}  
+\column[]{0.4\linewidth}
+\scriptsize
+\begin{minted}{java}
+    abstract class Periferico {
+        int nSerie;
+        String marca;
+        
+        Periferico(int n, String m) {
+            nSerie = n;
+            marca = m;
+        }
+        
+        int getSerie() {
+            return nSerie;
+        }
+        
+        void setSerie(int n) {
+            nSerie = n;
+        }
+    
+        abstract void imprimir();
+    }
+\end{minted}
+\column[]{0.6\linewidth}
+\scriptsize
+\begin{minted}{java}   
+class Rato extends Periferico {
+    int resolucao;
+    
+    Rato(int n, String s, int res) {
+        super(n, s);
+        resolucao = res;
+    }
+    
+    void imprimir() {
+        System.out.println("Isto é um rato");
+        System.out.println("Marca: " + marca);
+        System.out.println("Resolução:" + resolucao);
+    }
+        
+}
+\end{minted}
+\begin{itemize}
+\item No \mintinline{java}{main}:
+\begin{minted}{java}
+Rato r2 = new Rato(123, "Logitech", 300);
+r2.imprimir();
+\end{minted}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]{Coleções (e.g., \mintinline{java}{ArrayList, LinkedList}) de instâncias de subclasses}
+\begin{columns}
+\column[]{1\linewidth}
+\begin{itemize}
+    \item \texttt{Rato, PlacaRede, GavadorCD} são todas subclasses de \texttt{Periferico}
+    \item Por outras palavras, \texttt{Rato, PlacaRede, GavadorCD} \textit{is a} \texttt{Periferico}
+    \item Assim, instâncias destas podem ``viver'' numa coleção do tipo da superclasse:
+\begin{minted}{java}
+    Rato r = new Rato();
+    PlacaRede p = new PlacaRede();
+    List<Periferico> al = new ArrayList<>();
+    al.append(r);
+    al.append(p);
+    al.append(new GravadorCD());
+\end{minted}
+\item O que permite fazer:
+\begin{minted}{java}
+    for (Periferico p : al):
+        p.imprimir();
+\end{minted}
+\end{itemize}
+\column[]{0\linewidth}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{\mintinline{java}{instanceof}}
+\begin{itemize}
+    \item Permite ``perguntar'' ao objeto qual a classe da qual foi instanciado
+\end{itemize}
+\begin{columns}
+\column[t]{0.5\linewidth}
+\scriptsize
+\begin{minted}{java}
+Rato r = new Rato();
+PlacaRede p = new PlacaRede();
+List<Periferico> al = new ArrayList<>();
+al.append(r);  // cast implícito de Rato p/Periférico
+al.append(p);  // idem de PlacaRede
+al.append(new GravadorCD());  // idem de GravadorCD
+
+Periferico g = new GravadorCD();  // idem
+\end{minted}
+\column[t]{0.5\linewidth}
+\scriptsize
+\begin{minted}{java}
+    for (Periferico p : al) {
+        if (p instanceof Rato)
+            System.out.println("É um rato");
+        else if (p instanceof GravadorCD)
+            System.out.println("É um gravador");
+        else
+            System.out.println("É o outro");
+    }
+
+    if (g instanceof GravadorCD)
+        System.out.println("É um gravador");
+\end{minted}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Upcast \textit{vs.}\ Downcast}
+\begin{itemize}
+    \item \textbf{Upcast}
+    \begin{itemize}
+        \item conversão de um objeto de uma subclasse para o tipo da superclasse
+        \item pode ser feito implicitamente ou explicitamente
+\begin{minted}{java}
+    Periferico g = new GravadorCD();  // upcast implícito
+    Periferico h = (Periferico)new GravadorCD();  // upcast explícito
+\end{minted}
+    \end{itemize}
+    \item \textbf{Downcast}
+    \begin{itemize}
+        \item conversão de um objeto de uma superclasse para o tipo de uma das subclasses 
+        \item apenas pode ser feito explicitamente
+\begin{minted}{java}
+    Periferico p = new GravadorCD();  // upcast implícito
+    GravadorCD i = p;  // downcast implícito ERRO (Incompatible types)
+    GravadorCD h = (GravadorCD)p;  // downcast explícito OK
+    Rato r = (Rato)p;  // downcast explícito aceite, mas...
+\end{minted}
+\item O último caso é aceite pela JVM durante a compilação, mas vamos ter uma \mintinline{java}{ClassCastException} em runtime
+    \end{itemize}
+\end{itemize}
 \end{frame}
 
 \end{document}

@@ -1,0 +1,29 @@
+@startuml
+skinparam dpi 300
+hide circle
+skinparam classAttributeIconSize 0
+skinparam minClassWidth 100
+skinparam defaultFontName Linux Biolinum O
+
+class Periferico {
+~ nSerie: int
+~ marca: String
+}
+
+class Rato {
+~ resolucao: int
+}
+
+class PlacaRede {
+~ velocidade: int
+}
+
+class GravadorCD {
+~ lightScribe: bool
+}
+
+
+Periferico <|-- Rato
+Periferico <|-- PlacaRede
+Periferico <|-- GravadorCD
+@enduml
