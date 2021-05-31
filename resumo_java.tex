@@ -2256,9 +2256,9 @@ r2.imprimir();
     Rato r = new Rato();
     PlacaRede p = new PlacaRede();
     List<Periferico> al = new ArrayList<>();
-    al.append(r);
-    al.append(p);
-    al.append(new GravadorCD());
+    al.add(r);
+    al.add(p);
+    al.add(new GravadorCD());
 \end{minted}
 \item O que permite fazer:
 \begin{minted}{java}
@@ -2281,9 +2281,9 @@ r2.imprimir();
 Rato r = new Rato();
 PlacaRede p = new PlacaRede();
 List<Periferico> al = new ArrayList<>();
-al.append(r);  // cast implícito de Rato p/Periférico
-al.append(p);  // idem de PlacaRede
-al.append(new GravadorCD());  // idem de GravadorCD
+al.add(r);  // cast implícito de Rato p/Periférico
+al.add(p);  // idem de PlacaRede
+al.add(new GravadorCD());  // idem de GravadorCD
 
 Periferico g = new GravadorCD();  // idem
 \end{minted}
