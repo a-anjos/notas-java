@@ -2,6 +2,6 @@
 
 Estas notas servem apenas de resumo da matéria necessária para a realização das fichas da aula de P2.
 
-Para os diapositivos oficiais, consultar o Moodle da UC.
+Para os diapositivos oficiais, consulte o Moodle da UC.
 
-Caso encontre alguma imprecisão no conteúdo destes diapositivos, por favor, queiram informar o docente.
+Caso encontre alguma imprecisão no conteúdo destes diapositivos, por favor, queira informar o docente.
