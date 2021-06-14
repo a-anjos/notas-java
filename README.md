@@ -4,4 +4,4 @@ Estas notas servem apenas de resumo da matéria necessária para a realização 
 
 Para os diapositivos oficiais, consultar o Moodle da UC.
 
-Caso encontre alguma impreciso no conteúdo destes diapositivos, por favor, queiram informar o docente.
+Caso encontre alguma imprecisão no conteúdo destes diapositivos, por favor, queiram informar o docente.
